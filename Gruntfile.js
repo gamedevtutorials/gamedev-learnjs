@@ -8,6 +8,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-clean');
 
 
   grunt.initConfig({
@@ -44,9 +45,33 @@ module.exports = function(grunt) {
             expand: true,
             src: ['js/src/*.js'],
             dest: 'js/',
-            filter: 'isFile',
+            filter: "isFile",
             flatten : true
           }
+        ]
+      },
+      build : {
+        files: [
+
+          {
+            expand: true,
+            src: ['**'],
+            dest: 'build/',
+            flatten : false,
+            filterFileExceptions : [".idea",".gitignore","node_modules","Gruntfile.js","package.json","js/src","README.md"],
+            filter: function(filepath) {
+              var allowed = true;
+              var exceptions = this.filterFileExceptions||[];
+              for(var i=0; i < exceptions.length; i++) {
+                if(filepath.replace("\\","/").indexOf(exceptions[i].replace("\\","/")) == 0) {
+                  allowed = false;
+                  break;
+                }
+              }
+              return allowed;
+            }
+          }
+
         ]
       }
     },
@@ -60,6 +85,9 @@ module.exports = function(grunt) {
         debounceDelay: 3000,
         atBegin: true
       }
+    },
+    clean: {
+      build: ['build']
     }
 
   });
@@ -69,6 +97,7 @@ module.exports = function(grunt) {
   grunt.registerTask("dev-watchTask",["watch:plugins"]);
   grunt.registerTask("prod-build",["concat", "uglify"]);
   grunt.registerTask("html-server",["connect:server"]);
+  grunt.registerTask("prod-build",["clean:build","copy:build"]);
 
 
 };
