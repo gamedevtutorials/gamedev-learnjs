@@ -15,7 +15,7 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
     concat: {
       "chainPlugin" : {
-        "src" : "js/src/plugins/chaining/*.js",
+        "src" : "src/plugins/chaining/*.js",
         "dest" : "js/plugins/Chaining.js"
       }
     },
@@ -31,7 +31,7 @@ module.exports = function(grunt) {
     },
     uglify : {
       mainFiles: {
-        src: "js/src/*.js",
+        src: "src/*.js",
         "dest" : "js/",
         "expand" : true,
         "flatten" : true
@@ -43,7 +43,7 @@ module.exports = function(grunt) {
           // includes files within path
           {
             expand: true,
-            src: ['js/src/*.js'],
+            src: ['src/*.js'],
             dest: 'js/',
             filter: "isFile",
             flatten : true
@@ -58,7 +58,7 @@ module.exports = function(grunt) {
             src: ['**'],
             dest: 'build/',
             flatten : false,
-            filterFileExceptions : [".idea",".gitignore","node_modules","Gruntfile.js","package.json","js/src","README.md"],
+            filterFileExceptions : [".idea",".gitignore","node_modules","Gruntfile.js","package.json","src","README.md"],
             filter: function(filepath) {
               var allowed = true;
               var exceptions = this.filterFileExceptions||[];
@@ -78,7 +78,7 @@ module.exports = function(grunt) {
     watch: {
 
       plugins:{
-        files: 'js/src/plugins/**/*.js',
+        files: 'src/plugins/**/*.js',
         tasks: ['dev-buildPlugins']
       },
       options: {
