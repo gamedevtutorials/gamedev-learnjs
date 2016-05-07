@@ -14,9 +14,13 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     concat: {
-      "chainPlugin" : {
-        "src" : "src/plugins/chaining/*.js",
-        "dest" : "js/plugins/Chaining.js"
+      "EasyScript" : {
+        "src" : "src/plugins/Easyscript/*.js",
+        "dest" : "js/plugins/EasyScript.js"
+      },
+      "NwesLoader" : {
+        "src" : "src/plugins/Newsloader/*.js",
+        "dest" : "js/plugins/Newsloader.js"
       }
     },
     connect: {
