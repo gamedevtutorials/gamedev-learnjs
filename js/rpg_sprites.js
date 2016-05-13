@@ -1,7 +1,3 @@
-//=============================================================================
-// rpg_sprites.js
-//=============================================================================
-
 //-----------------------------------------------------------------------------
 // Sprite_Base
 //
@@ -66,6 +62,7 @@ Sprite_Base.prototype.startAnimation = function(animation, mirror, delay) {
 Sprite_Base.prototype.isAnimationPlaying = function() {
     return this._animationSprites.length > 0;
 };
+
 
 //-----------------------------------------------------------------------------
 // Sprite_Button
@@ -175,6 +172,7 @@ Sprite_Button.prototype.canvasToLocalY = function(y) {
     }
     return y;
 };
+
 
 //-----------------------------------------------------------------------------
 // Sprite_Character
@@ -444,6 +442,7 @@ Sprite_Character.prototype.isBalloonPlaying = function() {
     return !!this._balloonSprite;
 };
 
+
 //-----------------------------------------------------------------------------
 // Sprite_Battler
 //
@@ -633,6 +632,7 @@ Sprite_Battler.prototype.isMoving = function() {
 Sprite_Battler.prototype.inHomePosition = function() {
     return this._offsetX === 0 && this._offsetY === 0;
 };
+
 
 //-----------------------------------------------------------------------------
 // Sprite_Actor
@@ -843,7 +843,11 @@ Sprite_Actor.prototype.motionSpeed = function() {
 
 Sprite_Actor.prototype.refreshMotion = function() {
     var actor = this._actor;
+	var motionGuard = Sprite_Actor.MOTIONS['guard'];
     if (actor) {
+        if (this._motion === motionGuard && !BattleManager.isInputting()) {
+                return;
+        }
         var stateMotion = actor.stateMotionIndex();
         if (actor.isInputting() || actor.isActing()) {
             this.startMotion('walk');
@@ -903,6 +907,7 @@ Sprite_Actor.prototype.damageOffsetX = function() {
 Sprite_Actor.prototype.damageOffsetY = function() {
     return 0;
 };
+
 
 //-----------------------------------------------------------------------------
 // Sprite_Enemy
@@ -1161,6 +1166,7 @@ Sprite_Enemy.prototype.damageOffsetX = function() {
 Sprite_Enemy.prototype.damageOffsetY = function() {
     return -8;
 };
+
 
 //-----------------------------------------------------------------------------
 // Sprite_Animation
@@ -1424,7 +1430,7 @@ Sprite_Animation.prototype.updateCellSprite = function(sprite, cell) {
         sprite.scale.y = cell[3] / 100;
         sprite.opacity = cell[6];
         sprite.blendMode = cell[7];
-        sprite.visible = this._target.visible;
+        sprite.visible = true;
     } else {
         sprite.visible = false;
     }
@@ -1465,6 +1471,7 @@ Sprite_Animation.prototype.startHiding = function(duration) {
     this._hidingDuration = duration;
     this._target.hide();
 };
+
 
 //-----------------------------------------------------------------------------
 // Sprite_Damage
@@ -1586,6 +1593,7 @@ Sprite_Damage.prototype.isPlaying = function() {
     return this._duration > 0;
 };
 
+
 //-----------------------------------------------------------------------------
 // Sprite_StateIcon
 //
@@ -1664,6 +1672,7 @@ Sprite_StateIcon.prototype.updateFrame = function() {
     this.setFrame(sx, sy, pw, ph);
 };
 
+
 //-----------------------------------------------------------------------------
 // Sprite_StateOverlay
 //
@@ -1733,6 +1742,7 @@ Sprite_StateOverlay.prototype.updateFrame = function() {
         this.setFrame(0, 0, 0, 0);
     }
 };
+
 
 //-----------------------------------------------------------------------------
 // Sprite_Weapon
@@ -1815,6 +1825,7 @@ Sprite_Weapon.prototype.isPlaying = function() {
     return this._weaponImageId > 0;
 };
 
+
 //-----------------------------------------------------------------------------
 // Sprite_Balloon
 //
@@ -1885,6 +1896,7 @@ Sprite_Balloon.prototype.frameIndex = function() {
 Sprite_Balloon.prototype.isPlaying = function() {
     return this._duration > 0;
 };
+
 
 //-----------------------------------------------------------------------------
 // Sprite_Picture
@@ -1980,6 +1992,7 @@ Sprite_Picture.prototype.loadBitmap = function() {
     this.bitmap = ImageManager.loadPicture(this._pictureName);
 };
 
+
 //-----------------------------------------------------------------------------
 // Sprite_Timer
 //
@@ -2041,6 +2054,7 @@ Sprite_Timer.prototype.updateVisibility = function() {
     this.visible = $gameTimer.isWorking();
 };
 
+
 //-----------------------------------------------------------------------------
 // Sprite_Destination
 //
@@ -2097,6 +2111,7 @@ Sprite_Destination.prototype.updateAnimation = function() {
     this.scale.x = 1 + this._frameCount / 20;
     this.scale.y = this.scale.x;
 };
+
 
 //-----------------------------------------------------------------------------
 // Spriteset_Base
@@ -2235,6 +2250,7 @@ Spriteset_Base.prototype.updatePosition = function() {
     this.x += Math.round(screen.shake());
 };
 
+
 //-----------------------------------------------------------------------------
 // Spriteset_Map
 //
@@ -2351,10 +2367,27 @@ Spriteset_Map.prototype.updateTileset = function() {
     }
 };
 
+/*
+ * Simple fix for canvas parallax issue, destroy old parallax and readd to  the tree.
+ */
+Spriteset_Map.prototype._canvasReAddParallax = function() {
+    var index = this._baseSprite.children.indexOf(this._parallax);
+    this._baseSprite.removeChild(this._parallax);
+    this._parallax = new TilingSprite();
+    this._parallax.move(0, 0, Graphics.width, Graphics.height);
+    this._parallax.bitmap = ImageManager.loadParallax(this._parallaxName);
+    this._baseSprite.addChildAt(this._parallax,index);
+};
+
 Spriteset_Map.prototype.updateParallax = function() {
     if (this._parallaxName !== $gameMap.parallaxName()) {
         this._parallaxName = $gameMap.parallaxName();
-        this._parallax.bitmap = ImageManager.loadParallax(this._parallaxName);
+
+        if (this._parallax.bitmap && Graphics.isWebGL() != true) {
+            this._canvasReAddParallax();
+        } else {
+            this._parallax.bitmap = ImageManager.loadParallax(this._parallaxName);
+        }
     }
     if (this._parallax.bitmap) {
         this._parallax.origin.x = $gameMap.parallaxOx();
@@ -2380,6 +2413,7 @@ Spriteset_Map.prototype.updateWeather = function() {
     this._weather.origin.x = $gameMap.displayX() * $gameMap.tileWidth();
     this._weather.origin.y = $gameMap.displayY() * $gameMap.tileHeight();
 };
+
 
 //-----------------------------------------------------------------------------
 // Spriteset_Battle

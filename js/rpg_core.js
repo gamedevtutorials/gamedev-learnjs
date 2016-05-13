@@ -1,7 +1,3 @@
-//=============================================================================
-// rpg_core.js
-//=============================================================================
-
 //-----------------------------------------------------------------------------
 /**
  * This is not a class, but contains some methods that will be added to the
@@ -143,6 +139,7 @@ Math.randomInt = function(max) {
     return Math.floor(max * Math.random());
 };
 
+
 //-----------------------------------------------------------------------------
 /**
  * The static class that defines utility methods.
@@ -162,6 +159,16 @@ function Utils() {
  * @final
  */
 Utils.RPGMAKER_NAME = 'MV';
+
+/**
+ * The version of the RPG Maker.
+ *
+ * @static
+ * @property RPGMAKER_VERSION
+ * @type String
+ * @final
+ */
+Utils.RPGMAKER_VERSION = "1.2.0";
 
 /**
  * Checks whether the option is in the query string.
@@ -261,6 +268,7 @@ Utils.rgbToCssColor = function(r, g, b) {
     return 'rgb(' + r + ',' + g + ',' + b + ')';
 };
 
+
 //-----------------------------------------------------------------------------
 /**
  * The point class.
@@ -294,6 +302,7 @@ Point.prototype.initialize = function(x, y) {
  * @property y
  * @type Number
  */
+
 
 //-----------------------------------------------------------------------------
 /**
@@ -352,6 +361,7 @@ Rectangle.emptyRectangle = new Rectangle(0, 0, 0, 0);
  * @property height
  * @type Number
  */
+
 
 //-----------------------------------------------------------------------------
 /**
@@ -1083,6 +1093,7 @@ Bitmap.prototype._onError = function() {
 Bitmap.prototype._setDirty = function() {
     this._baseTexture.dirty();
 };
+
 
 //-----------------------------------------------------------------------------
 /**
@@ -2191,6 +2202,7 @@ Graphics._cancelFullScreen = function() {
     }
 };
 
+
 //-----------------------------------------------------------------------------
 /**
  * The static class that handles input data from the keyboard and gamepads.
@@ -2671,6 +2683,7 @@ Input._makeNumpadDirection = function(x, y) {
 Input._isEscapeCompatible = function(keyName) {
     return keyName === 'cancel' || keyName === 'menu';
 };
+
 
 //-----------------------------------------------------------------------------
 /**
@@ -3165,6 +3178,7 @@ TouchInput._onRelease = function(x, y) {
     this._x = x;
     this._y = y;
 };
+
 
 //-----------------------------------------------------------------------------
 /**
@@ -3719,6 +3733,7 @@ Sprite.prototype._renderWebGL = function(renderSession) {
  * @param {Number} index The index to get the child from
  * @return {Object} The child that was removed
  */
+
 
 //-----------------------------------------------------------------------------
 /**
@@ -4666,6 +4681,7 @@ Tilemap.WATERFALL_AUTOTILE_TABLE = [
  * @return {Object} The child that was removed
  */
 
+
 //-----------------------------------------------------------------------------
 /**
  * The sprite object for a tiling image.
@@ -4740,6 +4756,15 @@ Object.defineProperty(TilingSprite.prototype, 'opacity', {
     },
     configurable: true
 });
+
+TilingSprite.prototype.generateTilingTexture = function(arg) {
+    PIXI.TilingSprite.prototype.generateTilingTexture.call(this, arg);
+    // Purge from Pixi's Cache
+    if (Graphics.isWebGL()) {
+        if (this.tilingTexture.canvasBuffer)
+            PIXI.Texture.removeTextureFromCache(this.tilingTexture.canvasBuffer.canvas._pixiId);
+    }
+};
 
 /**
  * Updates the tiling sprite for each frame.
@@ -4850,6 +4875,7 @@ TilingSprite.prototype._refresh = function() {
  * @type Number
  */
 
+
 //-----------------------------------------------------------------------------
 /**
  * The sprite which covers the entire game screen.
@@ -4955,6 +4981,7 @@ ScreenSprite.prototype._renderCanvas = function(renderSession) {
         context.fillRect(0, 0, Graphics.width, Graphics.height);
     }
 };
+
 
 //-----------------------------------------------------------------------------
 /**
@@ -5643,6 +5670,7 @@ Window.prototype._updatePauseSign = function() {
  * @return {Object} The child that was removed
  */
 
+
 //-----------------------------------------------------------------------------
 /**
  * The layer which contains game windows.
@@ -5971,6 +5999,7 @@ WindowLayer.prototype._webglMaskRect = function(renderSession, x, y, w, h) {
  * @return {Object} The child that was removed
  */
 
+
 //-----------------------------------------------------------------------------
 /**
  * The weather effect which displays rain, storm, or snow.
@@ -6171,6 +6200,7 @@ Weather.prototype._rebornSprite = function(sprite) {
     sprite.opacity = 160 + Math.randomInt(60);
 };
 
+
 //-----------------------------------------------------------------------------
 /**
  * The color matrix filter for WebGL.
@@ -6322,6 +6352,7 @@ ToneFilter.prototype._multiplyMatrix = function(matrix) {
     }
 };
 
+
 //-----------------------------------------------------------------------------
 /**
  * The sprite which changes the screen color in 2D canvas mode.
@@ -6427,6 +6458,7 @@ ToneSprite.prototype._renderWebGL = function(renderSession) {
     // Not supported
 };
 
+
 //-----------------------------------------------------------------------------
 /**
  * The root object of the display tree.
@@ -6487,6 +6519,7 @@ Stage.prototype.initialize = function() {
  * @param {Number} index The index to get the child from
  * @return {Object} The child that was removed
  */
+
 
 //-----------------------------------------------------------------------------
 /**
@@ -7244,6 +7277,7 @@ WebAudio.prototype._readFourCharacters = function(array, index) {
     return string;
 };
 
+
 //-----------------------------------------------------------------------------
 /**
  * The static class that handles HTML5 Audio.
@@ -7685,6 +7719,7 @@ Html5Audio._applyTweenValue = function (volume) {
 
     Html5Audio._audioElement.volume = Html5Audio._tweenGain;
 };
+
 
 //-----------------------------------------------------------------------------
 /**

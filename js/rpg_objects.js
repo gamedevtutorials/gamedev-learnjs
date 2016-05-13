@@ -1,7 +1,3 @@
-//=============================================================================
-// rpg_objects.js
-//=============================================================================
-
 //-----------------------------------------------------------------------------
 // Game_Temp
 //
@@ -59,6 +55,7 @@ Game_Temp.prototype.destinationX = function() {
 Game_Temp.prototype.destinationY = function() {
     return this._destinationY;
 };
+
 
 //-----------------------------------------------------------------------------
 // Game_System
@@ -271,6 +268,7 @@ Game_System.prototype.replayWalkingBgm = function() {
     }
 };
 
+
 //-----------------------------------------------------------------------------
 // Game_Timer
 //
@@ -314,6 +312,7 @@ Game_Timer.prototype.seconds = function() {
 Game_Timer.prototype.onExpire = function() {
     BattleManager.abort();
 };
+
 
 //-----------------------------------------------------------------------------
 // Game_Message
@@ -505,6 +504,7 @@ Game_Message.prototype.allText = function() {
     });
 };
 
+
 //-----------------------------------------------------------------------------
 // Game_Switches
 //
@@ -536,6 +536,7 @@ Game_Switches.prototype.setValue = function(switchId, value) {
 Game_Switches.prototype.onChange = function() {
     $gameMap.requestRefresh();
 };
+
 
 //-----------------------------------------------------------------------------
 // Game_Variables
@@ -572,6 +573,7 @@ Game_Variables.prototype.onChange = function() {
     $gameMap.requestRefresh();
 };
 
+
 //-----------------------------------------------------------------------------
 // Game_SelfSwitches
 //
@@ -605,6 +607,7 @@ Game_SelfSwitches.prototype.setValue = function(key, value) {
 Game_SelfSwitches.prototype.onChange = function() {
     $gameMap.requestRefresh();
 };
+
 
 //-----------------------------------------------------------------------------
 // Game_Screen
@@ -923,6 +926,7 @@ Game_Screen.prototype.erasePicture = function(pictureId) {
     this._pictures[realPictureId] = null;
 };
 
+
 //-----------------------------------------------------------------------------
 // Game_Picture
 //
@@ -1089,10 +1093,11 @@ Game_Picture.prototype.updateTone = function() {
 };
 
 Game_Picture.prototype.updateRotation = function() {
-    if (this._rotationSpeed > 0) {
+    if (this._rotationSpeed !== 0) {
         this._angle += this._rotationSpeed / 2;
     }
 };
+
 
 //-----------------------------------------------------------------------------
 // Game_Item
@@ -1177,6 +1182,7 @@ Game_Item.prototype.setEquip = function(isWeapon, itemId) {
     this._dataClass = isWeapon ? 'weapon' : 'armor';
     this._itemId = itemId;
 };
+
 
 //-----------------------------------------------------------------------------
 // Game_Action
@@ -1406,7 +1412,7 @@ Game_Action.prototype.decideRandomTarget = function() {
         target = this.opponentsUnit().randomTarget();
     }
     if (target) {
-        this._targetIndex = target.index;
+        this._targetIndex = target.index();
     } else {
         this.clear();
     }
@@ -1528,7 +1534,7 @@ Game_Action.prototype.evaluate = function() {
             value += targetValue;
         } else if (targetValue > value) {
             value = targetValue;
-            this._targetIndex = target.index;
+            this._targetIndex = target.index();
         }
     }, this);
     value *= this.numRepeats();
@@ -1692,7 +1698,9 @@ Game_Action.prototype.evalDamageFormula = function(target) {
         var b = target;
         var v = $gameVariables._data;
         var sign = ([3, 4].contains(item.damage.type) ? -1 : 1);
-        return Math.max(eval(item.damage.formula), 0) * sign;
+        var value = Math.max(eval(item.damage.formula), 0) * sign;
+        if (isNaN(value)) value = 0;
+        return value;
     } catch (e) {
         return 0;
     }
@@ -1965,6 +1973,7 @@ Game_Action.prototype.applyGlobal = function() {
     }, this);
 };
 
+
 //-----------------------------------------------------------------------------
 // Game_ActionResult
 //
@@ -2069,6 +2078,7 @@ Game_ActionResult.prototype.pushRemovedBuff = function(paramId) {
         this.removedBuffs.push(paramId);
     }
 };
+
 
 //-----------------------------------------------------------------------------
 // Game_BattlerBase
@@ -2829,6 +2839,7 @@ Game_BattlerBase.prototype.canGuard = function() {
     return this.canUse($dataSkills[this.guardSkillId()]);
 };
 
+
 //-----------------------------------------------------------------------------
 // Game_Battler
 //
@@ -3369,6 +3380,7 @@ Game_Battler.prototype.performSubstitute = function(target) {
 
 Game_Battler.prototype.performCollapse = function() {
 };
+
 
 //-----------------------------------------------------------------------------
 // Game_Actor
@@ -4247,6 +4259,7 @@ Game_Actor.prototype.setLastCommandSymbol = function(symbol) {
     this._lastCommandSymbol = symbol;
 };
 
+
 //-----------------------------------------------------------------------------
 // Game_Enemy
 //
@@ -4537,6 +4550,7 @@ Game_Enemy.prototype.makeActions = function() {
     this.setActionState('waiting');
 };
 
+
 //-----------------------------------------------------------------------------
 // Game_Actors
 //
@@ -4559,6 +4573,7 @@ Game_Actors.prototype.actor = function(actorId) {
     }
     return null;
 };
+
 
 //-----------------------------------------------------------------------------
 // Game_Unit
@@ -4706,6 +4721,7 @@ Game_Unit.prototype.substituteBattler = function() {
         }
     }
 };
+
 
 //-----------------------------------------------------------------------------
 // Game_Party
@@ -5160,6 +5176,7 @@ Game_Party.prototype.requestMotionRefresh = function() {
     });
 };
 
+
 //-----------------------------------------------------------------------------
 // Game_Troop
 //
@@ -5362,6 +5379,7 @@ Game_Troop.prototype.makeDropItems = function() {
         return r.concat(enemy.makeDropItems());
     }, []);
 };
+
 
 //-----------------------------------------------------------------------------
 // Game_Map
@@ -6153,6 +6171,7 @@ Game_Map.prototype.isAnyEventStarting = function() {
     });
 };
 
+
 //-----------------------------------------------------------------------------
 // Game_CommonEvent
 //
@@ -6199,6 +6218,7 @@ Game_CommonEvent.prototype.update = function() {
         this._interpreter.update();
     }
 };
+
 
 //-----------------------------------------------------------------------------
 // Game_CharacterBase
@@ -6791,6 +6811,7 @@ Game_CharacterBase.prototype.endBalloon = function() {
     this._balloonPlaying = false;
 };
 
+
 //-----------------------------------------------------------------------------
 // Game_Character
 //
@@ -7351,6 +7372,7 @@ Game_Character.prototype.findDirectionTo = function(goalX, goalY) {
 Game_Character.prototype.searchLimit = function() {
     return 12;
 };
+
 
 //-----------------------------------------------------------------------------
 // Game_Player
@@ -7973,6 +7995,7 @@ Game_Player.prototype.areFollowersGathered = function() {
     return this._followers.areGathered();
 };
 
+
 //-----------------------------------------------------------------------------
 // Game_Follower
 //
@@ -8030,6 +8053,7 @@ Game_Follower.prototype.chaseCharacter = function(character) {
     }
     this.setMoveSpeed($gamePlayer.realMoveSpeed());
 };
+
 
 //-----------------------------------------------------------------------------
 // Game_Followers
@@ -8151,6 +8175,7 @@ Game_Followers.prototype.isSomeoneCollided = function(x, y) {
         return follower.pos(x, y);
     }, this);
 };
+
 
 //-----------------------------------------------------------------------------
 // Game_Vehicle
@@ -8385,6 +8410,7 @@ Game_Vehicle.prototype.isLandOk = function(x, y, d) {
     }
     return true;
 };
+
 
 //-----------------------------------------------------------------------------
 // Game_Event
@@ -8724,6 +8750,7 @@ Game_Event.prototype.forceMoveRoute = function(moveRoute) {
     Game_Character.prototype.forceMoveRoute.call(this, moveRoute);
     this._prelockDirection = 0;
 };
+
 
 //-----------------------------------------------------------------------------
 // Game_Interpreter
@@ -10256,7 +10283,7 @@ Game_Interpreter.prototype.command320 = function() {
 Game_Interpreter.prototype.command321 = function() {
     var actor = $gameActors.actor(this._params[0]);
     if (actor && $dataClasses[this._params[1]]) {
-        actor.changeClass(this._params[1], false);
+        actor.changeClass(this._params[1], this._params[2]);
     }
     return true;
 };
