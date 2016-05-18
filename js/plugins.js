@@ -6,5 +6,6 @@ var $plugins =
 {"name":"MessageItemInfo","status":true,"description":"Allows to show Item Information in the Message Windows","parameters":{}},
 {"name":"EnemyHPByLevel","status":true,"description":"Added dem Gegner zusätzliche HP hinzu, je nachdem wie hoch dieser ist","parameters":{"Actor Id":"5","Factor":"1.3"}},
 {"name":"EasyScript","status":true,"description":"","parameters":{}},
-{"name":"Newsloader","status":true,"description":"","parameters":{}}
+{"name":"Newsloader","status":true,"description":"","parameters":{}},
+{"name":"ItemScripts","status":true,"description":"Allows Scripts to call on Item Use","parameters":{"noteTag":"callscript"}}
 ];

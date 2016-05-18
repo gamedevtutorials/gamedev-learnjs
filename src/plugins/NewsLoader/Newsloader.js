@@ -9,7 +9,9 @@ GDT.Newsloader = {};
 
 GDT.Newsloader.load = function(url, crossdomain, callback) {
   try {
-    var loader = new PIXI.JsonLoader(url, crossdomain);
+
+    var date = new Date();
+    var loader = new PIXI.JsonLoader(url+"?_="+date.getMilliseconds(), crossdomain);
 
     loader.on("loaded", function() {
       callback(loader.json);
@@ -28,9 +30,17 @@ GDT.Newsloader.showNews = function(url, crossdomain, switchNumber, varNumberTitl
       $gameVariables.setValue(varNumberTitle, json.title);
       $gameVariables.setValue(varNumberContent,json.description );
       $gameSwitches.setValue(switchNumber, true);
+
+      beimNachladen(json);
     } else {
       console.warn("Problem while loading from "+url+". Error: "+e);
     }
 
   });
 };
+
+function beimNachladen(json) {
+  $gameSwitches.setValue(20, json.discount);
+  $gameSwitches.setValue(21, json.isRaining);
+  $gameSwitches.setValue(22, json.issuper);
+}
