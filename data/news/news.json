@@ -1,0 +1,8 @@
+{
+  "title" : "Coole Uberschrift",
+  "date" : "2016.05.07",
+  "description" : "We have super cool news for you \nWe have a news system which can be easy used \nand we need it!",
+  "discount" : false,
+  "isRaining" : true,
+  "issuper" : true
+}

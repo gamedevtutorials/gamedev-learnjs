@@ -7,5 +7,5 @@ var $plugins =
 {"name":"EnemyHPByLevel","status":true,"description":"Added dem Gegner zusätzliche HP hinzu, je nachdem wie hoch dieser ist","parameters":{"Actor Id":"5","Factor":"1.3"}},
 {"name":"EasyScript","status":true,"description":"","parameters":{}},
 {"name":"Newsloader","status":true,"description":"","parameters":{}},
-{"name":"ItemScripts","status":true,"description":"Allows Scripts to call on Item Use","parameters":{"noteTag":"callscript"}}
+{"name":"ItemScripts","status":true,"description":"v0.9 Allows Scripts to call on Item Use","parameters":{"noteTag":"callscript"}}
 ];
