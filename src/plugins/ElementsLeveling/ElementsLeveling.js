@@ -3,12 +3,39 @@
  */
 
 (function() {
+
+  DataManager.extractMetadata = function(data) {
+    var re = /<([^<>:]+)(:?)([^>]*)>/g;
+    data.meta = {};
+    for (;;) {
+      var match = re.exec(data.note);
+      if (match) {
+        if (match[2] === ':') {
+          if(data.meta[match[1]] !== undefined) {
+            if(!(data.meta[match[1]] instanceof Array)) {
+              data.meta[match[1]] = [data.meta[match[1]]]
+            }
+            data.meta[match[1]].push(match[3]);
+          } else {
+            data.meta[match[1]] = match[3];
+          }
+
+        } else {
+          data.meta[match[1]] = true;
+        }
+      } else {
+        break;
+      }
+    }
+  };
+
+
   var _Game_Action_apply = Game_Action.prototype.apply;
   Game_Action.prototype.apply = function(target) {
     _Game_Action_apply.call(this, target);
 
     if(target.result().isHit()) {
-      this.subject().calcElementExp(this.item());
+      this.subject().calcElementExp && this.subject().calcElementExp(this.item());
     }
   };
 
@@ -18,7 +45,7 @@
     this.clearElementParams();
   };
 
-
+  // TODO: Add Damage by Element Value
   /*Game_Action.prototype.makeDamageValue = function(target, critical) {
     var item = this.item();
     var baseValue = this.evalDamageFormula(target);
@@ -55,9 +82,9 @@
 
   Game_Actor.prototype.calcElementExp = function(item) {
     var elementId = item.damage.elementId;
-    var xp = (item.meta.xp !== undefined) ? item.meta.xp : 1;
+    var xp = (item.meta.xp !== undefined) ? item.meta.elementxp : 1;
     if(elementId > 0) {
-      this.addElementExp(elementId, xp);
+      this.gainElementExp(elementId, xp);
     }
   };
 
@@ -66,12 +93,27 @@
     this.gainElementExp(elementId, xp);
   };
 
+  Game_Actor.prototype.getElementName = function(elementId) {
+    return $dataSystem.elements[elementId];
+  };
+
   Game_Actor.prototype.gainElementExp = function(elementId, xp) {
-     this._elementParams[elementId] += xp;
+    if(elementId < 1) return false;
+    this._elementParams[elementId] += xp;
      var lastSkills = this.skills();
      if(this.shouldDisplayLevelUp() && this.calculateElementLevel(elementId)) {
-
+       this.displayElementLevelUp(elementId,this.findNewSkills(lastSkills));
      }
+  };
+
+  Game_Actor.prototype.displayElementLevelUp = function(elementId, newSkills) {
+    var elementText = "%1 Level for Element %2 is now on %3 ";
+    var text = elementText.format(this._name, this.getElementName(elementId), this.getElementLevel(elementId));
+    $gameMessage.newPage();
+    $gameMessage.add(text);
+    newSkills.forEach(function(skill) {
+      $gameMessage.add(TextManager.obtainSkill.format(skill.name));
+    });
   };
 
 
@@ -102,12 +144,57 @@
   };
 
   Game_Actor.prototype.learnSkillsforElement = function(elementId) {
-    var skills = this.skills();
-
+    var elementSkills = this.getSkillsToLearn(elementId);
+    for(var i=0; i < elementSkills.length; i++) {
+      var elementSkill = elementSkills[i];
+      if(this.canLearnElementSkill(elementSkill)) {
+        this.learnSkill(elementSkill.skillId);
+      }
+    }
   };
 
-  Game_Actor.prototype.getAllSkillsToLearn = function() {
-    return this.currentClass().meta.elementSkill;
+  Game_Actor.prototype.canLearnElementSkill = function(skill) {
+    var elementId = skill.element;
+    var charElementLevel = this.getElementLevel(elementId);
+    var neededElementLevel = skill.level;
+    return charElementLevel >= neededElementLevel;
+  };
+
+  Game_Actor.prototype.getSkillObjects = function(elementId) {
+    var skillObj = [];
+    var skills = this.getSkillsToLearn(elementId);
+    for(var i=0; i < skills.length; i++) {
+      skillObj.push(skills[i].obj);
+    }
+    return skillObj;
+  };
+
+  Game_Actor.prototype.getSkillsToLearn = function(elementId) {
+    var skills = [];
+    var skillIds = this.currentClass().meta.elementSkill;
+    skillIds = (skillIds instanceof Array) ? skillIds : [skillIds];
+    for(var i=0; i < skillIds.length; i++) {
+      var skill = skillIds[i].split(",");
+      if(skill.length < 3) {
+        continue;
+      }
+
+      skill = {
+        "element" : skill[0],
+        "level" : skill[1],
+        "skillId" : skill[2],
+        "obj" : $dataSkills[skill[2]]
+      };
+      if(elementId && skill.element == elementId) {
+        skills.push(skill);
+      } else {
+        skills.push(skill);
+      }
+
+
+
+    }
+    return skills;
   };
 
   Game_Actor.prototype.getElementLevelByXp = function(elementId) {
