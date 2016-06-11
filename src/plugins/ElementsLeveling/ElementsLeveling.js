@@ -74,7 +74,7 @@
      }
   };
 
-  Game_Actor.prototype
+
 
   Game_Actor.prototype.getNeededElementXPForNextLevel = function(elementId) {
     this.calcElementLevel(elementId);
