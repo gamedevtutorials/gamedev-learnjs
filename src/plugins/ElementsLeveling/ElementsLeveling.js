@@ -35,7 +35,7 @@
     _Game_Action_apply.call(this, target);
 
     if(target.result().isHit()) {
-      this.subject().calcElementExp && this.subject().calcElementExp(this.item());
+      this.subject().calcElementExp && this.subject().calcElementExp(this.item(), true);
     }
   };
 
@@ -44,6 +44,29 @@
     _Game_Actor_setup.call(this, actorId);
     this.clearElementParams();
   };
+
+  Game_Actor.prototype.updateElementExp = function() {
+    var elements = $dataSystem.elements;
+    for(var i=1; i < elements.length; i++) {
+      this.gainElementExp(i, 0);
+    }
+  };
+
+
+  BattleManager.gainRewards = function() {
+    this.gainExp();
+    this.gainElementExp();
+    this.gainGold();
+    this.gainDropItems();
+  };
+
+  BattleManager.gainElementExp = function() {
+    $gameParty.allMembers().forEach(function(actor) {
+      actor.updateElementExp();
+    });
+  };
+
+
 
   // TODO: Add Damage by Element Value
   /*Game_Action.prototype.makeDamageValue = function(target, critical) {
@@ -78,13 +101,16 @@
     }
   };
 
-
-
-  Game_Actor.prototype.calcElementExp = function(item) {
+    Game_Actor.prototype.calcElementExp = function(item, inFight) {
     var elementId = item.damage.elementId;
-    var xp = (item.meta.xp !== undefined) ? parseFloat(item.meta.elementxp) : 1;
+    var xp = (item.meta.elementxp !== undefined) ? parseFloat(item.meta.elementxp) : 1;
     if(elementId > 0) {
-      this.gainElementExp(elementId, xp);
+      if(inFight){
+        this.addElementExp(elementId, xp);
+      } else {
+        this.gainElementExp(elementId, xp);
+      }
+
     }
   };
 
@@ -104,6 +130,11 @@
      if(this.shouldDisplayLevelUp() && this.calculateElementLevel(elementId)) {
        this.displayElementLevelUp(elementId,this.findNewSkills(lastSkills));
      }
+  };
+
+  Game_Actor.prototype.addElementExp = function(elementId, xp) {
+    if(elementId < 1) return false;
+    this._elementParams[elementId] += xp;
   };
 
   Game_Actor.prototype.displayElementLevelUp = function(elementId, newSkills) {

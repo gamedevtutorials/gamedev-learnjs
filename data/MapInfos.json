@@ -4,5 +4,6 @@ null,
 {"id":2,"expanded":false,"name":"Draussen","order":2,"parentId":0,"scrollX":819,"scrollY":461},
 {"id":3,"expanded":false,"name":"MAP003","order":3,"parentId":0,"scrollX":816,"scrollY":624},
 {"id":4,"expanded":false,"name":"Dungeon","order":4,"parentId":0,"scrollX":811,"scrollY":499},
-{"id":5,"expanded":false,"name":"Aussen1","order":5,"parentId":0,"scrollX":582,"scrollY":305.5}
+{"id":5,"expanded":false,"name":"Aussen1","order":5,"parentId":0,"scrollX":582,"scrollY":305.5},
+{"id":6,"expanded":false,"name":"Dungeon1","order":6,"parentId":0,"scrollX":466,"scrollY":314.5}
 ]
