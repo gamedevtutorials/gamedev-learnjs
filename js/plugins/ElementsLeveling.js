@@ -2,7 +2,39 @@
  * Created by Gilles on 11.06.2016.
  */
 
+/*:
+ * @plugindesc v1.0 Gives your Partymembers the possibility to level their elemental levels.
+ * You can use notetags to learn skills when an element is leveled up
+ * @author Gilles Meyer <admin[at]gamedev-tutorials.com>
+ *
+ * @param LevelUpText
+ * @desc The Text which is shown when a player levels up an element
+ * @default %1s Level for Element %2 is now on %3
+ *
+ * @param ElementExpOutsideOfBattle
+ * @desc Should the Player get Elemental Exp when outside of a battle (example: Heal Skill)
+ * @default 0
+ *
+ *
+ * @help
+ * Note  Tags for Skills:
+ * <elementxp:*ANY_NUMBER*>  #Replace *ANY_NUMBER* with an element xp count the player should get for using this skill
+ *
+ * Class:
+ * <elementSkill:*ELEMENT_ID*,*ELEMENT_LEVEL*,*SKILL_TO_LEARN*>
+ *   # ELEMENT_ID: The Id of the Element which needs a specific level (id can be found in Database -> Types)
+ *   # ELEMENT_LEVEL: Which level has the element to be, that the skill will be learned
+ *   # SKILL_TO_LEARN: Id of the skill which will be learned (id can be found in Database->Skills)
+ *
+ *
+ */
+
 (function() {
+
+  var parameters = PluginManager.parameters('ElementsLeveling');
+  var LEVEL_UP_TEXT = String(parameters['LevelUpText'] || "%1s Level for Element %2 is now on %3");
+  var EXP_OUTSIDE_BATTLE = !!parameters['ElementExpOutsideOfBattle'];
+
 
   DataManager.extractMetadata = function(data) {
     var re = /<([^<>:]+)(:?)([^>]*)>/g;
@@ -35,7 +67,7 @@
     _Game_Action_apply.call(this, target);
 
     if(target.result().isHit()) {
-      this.subject().calcElementExp && this.subject().calcElementExp(this.item(), true);
+      this.subject().calcElementExp && this.subject().calcElementExp(this.item());
     }
   };
 
@@ -68,9 +100,21 @@
 
 
 
-  // TODO: Add Damage by Element Value
-  /*Game_Action.prototype.makeDamageValue = function(target, critical) {
-    var item = this.item();
+
+  var _Game_Action_makeDamageValue = Game_Action.prototype.makeDamageValue;
+  Game_Action.prototype.makeDamageValue = function(target, critical) {
+    var value = _Game_Action_makeDamageValue.call(this,target,critical);
+    var subject = this.subject();
+    if(subject.getElementLevel && this.item().damage.elementId > 0) {
+      var elementId = this.item().damage.elementId;
+      var elemLevel = subject.getElementLevel(elementId);
+
+      var multiplyFactor = (100 + subject.getElementDamageExtraDamage(elemLevel, elementId)) / 100;
+      value *= multiplyFactor;
+    }
+
+    return value;
+   /* var item = this.item();
     var baseValue = this.evalDamageFormula(target);
     var value = baseValue * this.calcElementRate(target);
     if (this.isPhysical()) {
@@ -88,8 +132,13 @@
     value = this.applyVariance(value, item.damage.variance);
     value = this.applyGuard(value, target);
     value = Math.round(value);
-    return value;
-  };*/
+    return value;*/
+  };
+
+  Game_Actor.prototype.getElementDamageExtraDamage = function(elementLevel, elementId) {
+    var table = [0,100,300,500,1000,2000,2500,10012,120312];
+    return table[elementLevel];
+  };
 
 
   Game_Actor.prototype.clearElementParams = function() {
@@ -101,14 +150,16 @@
     }
   };
 
-    Game_Actor.prototype.calcElementExp = function(item, inFight) {
+    Game_Actor.prototype.calcElementExp = function(item, forceExp) {
     var elementId = item.damage.elementId;
     var xp = (item.meta.elementxp !== undefined) ? parseFloat(item.meta.elementxp) : 1;
     if(elementId > 0) {
-      if(inFight){
+      if($gameParty.inBattle()){
         this.addElementExp(elementId, xp);
       } else {
-        this.gainElementExp(elementId, xp);
+        if(EXP_OUTSIDE_BATTLE || forceExp) {
+          this.gainElementExp(elementId, xp);
+        }
       }
 
     }
@@ -127,7 +178,7 @@
     if(elementId < 1) return false;
     this._elementParams[elementId] += xp;
      var lastSkills = this.skills();
-     if(this.shouldDisplayLevelUp() && this.calculateElementLevel(elementId)) {
+     if(this.shouldDisplayLevelUp() && this.calculateElementLevel(elementId, true)) {
        this.displayElementLevelUp(elementId,this.findNewSkills(lastSkills));
      }
   };
@@ -138,8 +189,7 @@
   };
 
   Game_Actor.prototype.displayElementLevelUp = function(elementId, newSkills) {
-    var elementText = "%1 Level for Element %2 is now on %3 ";
-    var text = elementText.format(this._name, this.getElementName(elementId), this.getElementLevel(elementId));
+    var text = LEVEL_UP_TEXT.format(this._name, this.getElementName(elementId), this.getElementLevel(elementId));
     $gameMessage.newPage();
     $gameMessage.add(text);
     newSkills.forEach(function(skill) {
@@ -150,13 +200,13 @@
 
 
   Game_Actor.prototype.getNeededElementXPForNextLevel = function(elementId) {
-    this.calcElementLevel(elementId);
+    this.calculateElementLevel(elementId);
 
     var curve = this.getElementLevelCurve(elementId);
     var level = this.getElementLevel(elementId);
     var currentXp = this.getElementExp(elementId);
 
-    var expForNextLevel = curve[level+1];
+    var expForNextLevel = curve[level];
 
     return expForNextLevel-currentXp;
 
