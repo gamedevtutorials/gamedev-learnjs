@@ -82,7 +82,7 @@
 
   Game_Actor.prototype.calcElementExp = function(item) {
     var elementId = item.damage.elementId;
-    var xp = (item.meta.xp !== undefined) ? item.meta.elementxp : 1;
+    var xp = (item.meta.xp !== undefined) ? parseFloat(item.meta.elementxp) : 1;
     if(elementId > 0) {
       this.gainElementExp(elementId, xp);
     }
