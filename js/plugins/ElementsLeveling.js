@@ -114,31 +114,9 @@
     }
 
     return value;
-   /* var item = this.item();
-    var baseValue = this.evalDamageFormula(target);
-    var value = baseValue * this.calcElementRate(target);
-    if (this.isPhysical()) {
-      value *= target.pdr;
-    }
-    if (this.isMagical()) {
-      value *= target.mdr;
-    }
-    if (baseValue < 0) {
-      value *= target.rec;
-    }
-    if (critical) {
-      value = this.applyCritical(value);
-    }
-    value = this.applyVariance(value, item.damage.variance);
-    value = this.applyGuard(value, target);
-    value = Math.round(value);
-    return value;*/
   };
 
-  Game_Actor.prototype.getElementDamageExtraDamage = function(elementLevel, elementId) {
-    var table = [0,100,300,500,1000,2000,2500,10012,120312];
-    return table[elementLevel];
-  };
+
 
 
   Game_Actor.prototype.clearElementParams = function() {
@@ -302,7 +280,12 @@
   };
 
   Game_Actor.prototype.getElementLevelCurve = function(elementId) {
-    return [5,20,40,65,90,120,160,200,260,330,400,500,650,830,1000];
+    return [15,40,85,120,160,200,250,300,350,400,500,600,690,830,1000];
+  };
+
+  Game_Actor.prototype.getElementDamageExtraDamage = function(elementLevel, elementId) {
+    var table = [0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150];
+    return table[elementLevel];
   };
 
 })();
