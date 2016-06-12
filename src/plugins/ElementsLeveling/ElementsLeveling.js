@@ -1,7 +1,3 @@
-/**
- * Created by Gilles on 11.06.2016.
- */
-
 /*:
  * @plugindesc v1.1 - Gives your Partymembers the possibility to level their elemental levels.
  * You can use notetags to learn skills when an element is leveled up
@@ -39,7 +35,7 @@
 
 (function() {
 
-  var parameters = PluginManager.parameters('ElementsLeveling');
+  var parameters = PluginManager.parameters('GDT_ElementsLeveling');
   var LEVEL_UP_TEXT = String(parameters['Level Up Text'] || "%1s Level for Element %2 is now on %3");
   var EXP_OUTSIDE_BATTLE = !!parameters['Element Exp Outside Of Battle'];
   var LEVEL_CURVE = String(parameters['Level Curve'] || "15,40,85,120,160,200,250,300,350,400,500,600,690,830,1000").split(",")
