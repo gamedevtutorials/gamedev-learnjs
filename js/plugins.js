@@ -10,5 +10,6 @@ var $plugins =
 {"name":"ItemScripts","status":true,"description":"v0.9 Allows Scripts to call on Item Use","parameters":{"noteTag":"callscript"}},
 {"name":"PartyGainExpPlugin","status":true,"description":"","parameters":{}},
 {"name":"HIME_ConditionalChoiceText","status":true,"description":"v1.1 - Allows you to dynamically set the text for each choice\r\nin your events.","parameters":{}},
-{"name":"HIME_HiddenChoiceConditions","status":true,"description":"Allows you to hide choices with a simple event call","parameters":{}}
+{"name":"HIME_HiddenChoiceConditions","status":true,"description":"Allows you to hide choices with a simple event call","parameters":{}},
+{"name":"ElementsLeveling","status":true,"description":"v1.0 Gives your Partymembers the possibility to level their elemental levels.\r\nYou can use notetags to learn skills when an element is leveled up","parameters":{"Level Up Text":"%1s Level for Element %2 is now on %3","Level Curve":"15,40,85,120,160,200,250,300,350,400,500,600,690,830,1000","Extra Damage Curve":"0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150","Element Exp Outside Of Battle":"0"}}
 ];

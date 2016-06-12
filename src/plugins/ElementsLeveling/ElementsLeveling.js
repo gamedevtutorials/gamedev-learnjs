@@ -3,15 +3,23 @@
  */
 
 /*:
- * @plugindesc v1.0 Gives your Partymembers the possibility to level their elemental levels.
+ * @plugindesc v1.1 - Gives your Partymembers the possibility to level their elemental levels.
  * You can use notetags to learn skills when an element is leveled up
  * @author Gilles Meyer <admin[at]gamedev-tutorials.com>
  *
- * @param LevelUpText
+ * @param Level Up Text
  * @desc The Text which is shown when a player levels up an element
  * @default %1s Level for Element %2 is now on %3
  *
- * @param ElementExpOutsideOfBattle
+ * @param Level Curve
+ * @desc The XP needed for each level
+ * @default 15,40,85,120,160,200,250,300,350,400,500,600,690,830,1000
+ *
+ * @param Extra Damage Curve
+ * @desc The extra damage the skills do each element level
+ * @default 0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150
+ *
+ * @param Element Exp Outside Of Battle
  * @desc Should the Player get Elemental Exp when outside of a battle (example: Heal Skill)
  * @default 0
  *
@@ -32,8 +40,21 @@
 (function() {
 
   var parameters = PluginManager.parameters('ElementsLeveling');
-  var LEVEL_UP_TEXT = String(parameters['LevelUpText'] || "%1s Level for Element %2 is now on %3");
-  var EXP_OUTSIDE_BATTLE = !!parameters['ElementExpOutsideOfBattle'];
+  var LEVEL_UP_TEXT = String(parameters['Level Up Text'] || "%1s Level for Element %2 is now on %3");
+  var EXP_OUTSIDE_BATTLE = !!parameters['Element Exp Outside Of Battle'];
+  var LEVEL_CURVE = String(parameters['Level Curve'] || "15,40,85,120,160,200,250,300,350,400,500,600,690,830,1000").split(",")
+  var DAMAGE_CURVE = String(parameters['Extra Damage Curve'] || "0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150").split(",")
+
+  // LEVEL_CURVE NEEDS NUMBERS
+  for(i=0; i  < LEVEL_CURVE.length; i++) {
+    LEVEL_CURVE[i] = parseInt(LEVEL_CURVE[i]);
+  }
+
+  for(i=0; i  < DAMAGE_CURVE.length; i++) {
+    DAMAGE_CURVE[i] = parseInt(DAMAGE_CURVE[i]);
+  }
+
+
 
 
   DataManager.extractMetadata = function(data) {
@@ -184,7 +205,7 @@
     var level = this.getElementLevel(elementId);
     var currentXp = this.getElementExp(elementId);
 
-    var expForNextLevel = curve[level];
+    var expForNextLevel = parseInt(curve[level]);
 
     return expForNextLevel-currentXp;
 
@@ -280,12 +301,12 @@
   };
 
   Game_Actor.prototype.getElementLevelCurve = function(elementId) {
-    return [15,40,85,120,160,200,250,300,350,400,500,600,690,830,1000];
+    return LEVEL_CURVE;
   };
 
   Game_Actor.prototype.getElementDamageExtraDamage = function(elementLevel, elementId) {
-    var table = [0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150];
-    return table[elementLevel];
+    var table = DAMAGE_CURVE;
+    return parseFloat(table[elementLevel]);
   };
 
 })();
