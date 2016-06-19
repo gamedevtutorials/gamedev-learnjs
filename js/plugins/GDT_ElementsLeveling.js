@@ -230,10 +230,19 @@
   };
 
   Game_Actor.prototype.canLearnElementSkill = function(skill) {
-    var elementId = skill.element;
-    var charElementLevel = this.getElementLevel(elementId);
-    var neededElementLevel = skill.level;
-    return charElementLevel >= neededElementLevel;
+    return this.hasNeededElementSkillLevel(skill.element, skill.level);
+  };
+
+  Game_Actor.prototype.hasNeededElementSkillLevel = function(element,level) {
+    var levels = (""+level).split(";");
+    var elements = (""+element).split(";");
+    for (var i = 0; i < elements.length; i++) {
+      var elem = parseInt(elements[i]);
+      var level = (levels.length > 1) ? parseInt(levels[i]) : parseInt(levels[0]);
+      var charElementLevel = this.getElementLevel(elem);
+      if(charElementLevel < level) return false;
+    }
+    return true;
   };
 
   Game_Actor.prototype.getSkillObjects = function(elementId) {
@@ -261,9 +270,9 @@
         "skillId" : skill[2],
         "obj" : $dataSkills[skill[2]]
       };
-      if(elementId && skill.element == elementId) {
+      if(elementId && this.hasSkillElement(skill,elementId)) {
         skills.push(skill);
-      } else {
+      } else if(typeof elementId == "undefined") {
         skills.push(skill);
       }
 
@@ -272,6 +281,17 @@
     }
     return skills;
   };
+
+  Game_Actor.prototype.hasSkillElement = function(skill, element) {
+    var elements = (""+element).split(";");
+    for (var i = 0; i < elements.length; i++) {
+      var elem = parseInt(elements[i]);
+      if(elem == element) return true;
+    }
+    return false;
+  };
+
+
 
   Game_Actor.prototype.getElementLevelByXp = function(elementId) {
     var xp = this._elementParams[elementId];
