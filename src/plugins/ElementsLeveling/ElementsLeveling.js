@@ -1,5 +1,5 @@
 /*:
- * @plugindesc v1.1 - Gives your Partymembers the possibility to level their elemental levels.
+ * @plugindesc v1.2 - Gives your Partymembers the possibility to level their elemental levels.
  * You can use notetags to learn skills when an element is leveled up
  * @author Gilles Meyer <admin[at]gamedev-tutorials.com>
  *
