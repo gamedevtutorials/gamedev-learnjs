@@ -1,5 +1,5 @@
 /*:
- * @plugindesc v1.1 - Gives your Partymembers the possibility to level their elemental levels.
+ * @plugindesc v1.2 - Gives your Partymembers the possibility to level their elemental levels.
  * You can use notetags to learn skills when an element is leveled up
  * @author Gilles Meyer <admin[at]gamedev-tutorials.com>
  *
@@ -25,9 +25,9 @@
  * <elementxp:*ANY_NUMBER*>  #Replace *ANY_NUMBER* with an element xp count the player should get for using this skill
  *
  * Class:
- * <elementSkill:*ELEMENT_ID*,*ELEMENT_LEVEL*,*SKILL_TO_LEARN*>
- *   # ELEMENT_ID: The Id of the Element which needs a specific level (id can be found in Database -> Types)
- *   # ELEMENT_LEVEL: Which level has the element to be, that the skill will be learned
+ * <elementSkill:*ELEMENT_ID(S)*,*ELEMENT_LEVEL(S)*,*SKILL_TO_LEARN*>
+ *   # ELEMENT_ID: The Id(s) of the Element which needs a specific level (id can be found in Database -> Types) (Levels are seperated by ;)
+ *   # ELEMENT_LEVEL: Which level has/have the element(s) to be, that the skill will be learned (levels are sperated by ;)
  *   # SKILL_TO_LEARN: Id of the skill which will be learned (id can be found in Database->Skills)
  *
  *
