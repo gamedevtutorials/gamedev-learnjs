@@ -57,11 +57,11 @@
 
   // LEVEL_CURVE NEEDS NUMBERS
   for(var i=0; i  < LEVEL_CURVE.length; i++) {
-    LEVEL_CURVE[i] = parseInt(LEVEL_CURVE[i]);
+    LEVEL_CURVE[i] = parseInt(LEVEL_CURVE[i].trim());
   }
 
   for(var i=0; i  < DAMAGE_CURVE.length; i++) {
-    DAMAGE_CURVE[i] = parseInt(DAMAGE_CURVE[i]);
+    DAMAGE_CURVE[i] = parseInt(DAMAGE_CURVE[i].trim());
   }
 
 
@@ -249,8 +249,8 @@
     var levels = (""+level).split(";");
     var elements = (""+element).split(";");
     for (var i = 0; i < elements.length; i++) {
-      var elem = parseInt(elements[i]);
-      var level = (levels.length > 1) ? parseInt(levels[i]) : parseInt(levels[0]);
+      var elem = parseInt(elements[i].trim());
+      var level = (levels.length > 1) ? parseInt(levels[i].trim()) : parseInt(levels[0].trim());
       var charElementLevel = this.getElementLevel(elem);
       if(charElementLevel < level) return false;
     }
@@ -277,10 +277,10 @@
       }
 
       skill = {
-        "element" : skill[0],
-        "level" : skill[1],
-        "skillId" : skill[2],
-        "obj" : $dataSkills[skill[2]]
+        "element" : skill[0].trim(),
+        "level" : skill[1].trim(),
+        "skillId" : skill[2].trim(),
+        "obj" : $dataSkills[skill[2].trim()]
       };
       if(elementId && this.hasSkillElement(skill,elementId)) {
         skills.push(skill);
@@ -297,7 +297,7 @@
   Game_Actor.prototype.hasSkillElement = function(skill, element) {
     var elements = (""+element).split(";");
     for (var i = 0; i < elements.length; i++) {
-      var elem = parseInt(elements[i]);
+      var elem = parseInt(elements[i].trim());
       if(elem == element) return true;
     }
     return false;
