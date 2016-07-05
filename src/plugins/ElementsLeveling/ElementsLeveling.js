@@ -1,7 +1,9 @@
 /*:
- * @plugindesc v1.2 - Gives your Partymembers the possibility to level their elemental levels.
+ * @plugindesc v1.3 - Gives your Partymembers the possibility to level their elemental levels.
  * You can use notetags to learn skills when an element is leveled up
  * @author Gilles Meyer <admin[at]gamedev-tutorials.com>
+ *
+ * @param - General -
  *
  * @param Level Up Text
  * @desc The Text which is shown when a player levels up an element
@@ -19,6 +21,18 @@
  * @desc Should the Player get Elemental Exp when outside of a battle (example: Heal Skill)
  * @default 0
  *
+ * @param - Status Window (Yanfly Status)-
+ *
+ * @param Status Menu Text
+ * @desc Name of the Sub-Status Menu inside the Status Menu
+ * @default Elements Level
+ *
+ * @param Element Level Column 1
+ * @desc Ids of the Elements in the first Column
+ * @default 2 3 4 5 6 7 8 9
+ *
+ * @param Element Level Column 2
+ * @desc Ids of the Elements in the second Column
  *
  * @help
  * Note  Tags for Skills:
@@ -42,15 +56,13 @@
   var DAMAGE_CURVE = String(parameters['Extra Damage Curve'] || "0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150").split(",")
 
   // LEVEL_CURVE NEEDS NUMBERS
-  for(i=0; i  < LEVEL_CURVE.length; i++) {
+  for(var i=0; i  < LEVEL_CURVE.length; i++) {
     LEVEL_CURVE[i] = parseInt(LEVEL_CURVE[i]);
   }
 
-  for(i=0; i  < DAMAGE_CURVE.length; i++) {
+  for(var i=0; i  < DAMAGE_CURVE.length; i++) {
     DAMAGE_CURVE[i] = parseInt(DAMAGE_CURVE[i]);
   }
-
-
 
 
   DataManager.extractMetadata = function(data) {
