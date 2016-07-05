@@ -14,6 +14,10 @@ module.exports = function (grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     concat: {
+      "GDTCore": {
+        "src": "src/plugins/Core/*.js",
+        "dest": "js/plugins/GDT_Core.js"
+      },
       "EasyScript": {
         "src": "src/plugins/Easyscript/*.js",
         "dest": "js/plugins/EasyScript.js"
