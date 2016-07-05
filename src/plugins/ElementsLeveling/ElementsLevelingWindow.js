@@ -18,7 +18,7 @@
   GDT.Param.StatusEleLCol2 = GDT.Param.StatusEleLCol2.split(' ');
 
 
-  if (Window_StatusCommand) {
+  if (typeof Window_StatusCommand != "undefined") {
 
     var _Window_StatusCommand_createCommand = Window_StatusCommand.prototype.createCommand;
     Window_StatusCommand.prototype.createCommand = function (command) {
