@@ -1,5 +1,5 @@
 /*:
- * @plugindesc v1.3 - Gives your Partymembers the possibility to level their elemental levels.
+ * @plugindesc v1.3.1 - Gives your Partymembers the possibility to level their elemental levels.
  * You can use notetags to learn skills when an element is leveled up
  * @author Gilles Meyer <admin[at]gamedev-tutorials.com>
  *
@@ -271,7 +271,11 @@
     var skillIds = this.currentClass().meta.elementSkill;
     skillIds = (skillIds instanceof Array) ? skillIds : [skillIds];
     for(var i=0; i < skillIds.length; i++) {
-      var skill = skillIds[i].split(",");
+      var skillString = skillIds[i];
+      if(typeof skillString != "string") {
+        continue;
+      }
+      var skill = skillString.split(",");
       if(skill.length < 3) {
         continue;
       }
