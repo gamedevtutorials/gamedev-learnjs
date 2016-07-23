@@ -1,5 +1,5 @@
 /*:
- * @plugindesc v1.3.1 - Gives your Partymembers the possibility to level their elemental levels.
+ * @plugindesc v1.4 - Gives your Partymembers the possibility to level their elemental levels.
  * You can use notetags to learn skills when an element is leveled up
  * @author Gilles Meyer <admin[at]gamedev-tutorials.com>
  *
@@ -34,6 +34,14 @@
  * @param Element Level Column 2
  * @desc Ids of the Elements in the second Column
  *
+ * @param Show Icons
+ * @desc Show Icons for Elements
+ * @default 1
+ *
+ * @param Icon List
+ * @desc Icon Ids for each Element (0 for no icon)
+ * @default 77,64,65,66,67,68,69,70,71,72,73
+ *
  * @help
  * Note  Tags for Skills:
  * <elementxp:*ANY_NUMBER*>  #Replace *ANY_NUMBER* with an element xp count the player should get for using this skill
@@ -52,8 +60,9 @@
   var parameters = PluginManager.parameters('GDT_ElementsLeveling');
   var LEVEL_UP_TEXT = String(parameters['Level Up Text'] || "%1s Level for Element %2 is now on %3");
   var EXP_OUTSIDE_BATTLE = !!parameters['Element Exp Outside Of Battle'];
-  var LEVEL_CURVE = String(parameters['Level Curve'] || "15,40,85,120,160,200,250,300,350,400,500,600,690,830,1000").split(",")
-  var DAMAGE_CURVE = String(parameters['Extra Damage Curve'] || "0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150").split(",")
+  var LEVEL_CURVE = String(parameters['Level Curve'] || "15,40,85,120,160,200,250,300,350,400,500,600,690,830,1000").split(",");
+  var DAMAGE_CURVE = String(parameters['Extra Damage Curve'] || "0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150").split(",");
+
 
   // LEVEL_CURVE NEEDS NUMBERS
   for(var i=0; i  < LEVEL_CURVE.length; i++) {

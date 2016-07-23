@@ -16,6 +16,9 @@
   GDT.Param.StatusEleLCol1 = GDT.Param.StatusEleLCol1.split(' ');
   GDT.Param.StatusEleLCol2 = String(parameters['Element Level Column 2']);
   GDT.Param.StatusEleLCol2 = GDT.Param.StatusEleLCol2.split(' ');
+  GDT.Param.ShowIcons = (parameters['Show Icons'] == "1");
+  GDT.Param.IconList = String(parameters['Icon List']);
+  GDT.Param.IconList = GDT.Param.IconList.split(",");
 
 
   if (typeof Window_StatusCommand != "undefined") {
@@ -59,6 +62,10 @@
       var dx = this.getArrayX();
       var dy = this.getArrayY();
       var dw = this.getArrayDW(maxCols);
+      if(GDT.Param.ShowIcons) {
+        dw += Window_Base._iconWidth;
+        dx -= Window_Base._iconWidth;
+      }
       for (var i = 0; i < maxCols; ++i) {
         for (var j = 0; j < maxRows; ++j) {
           this.drawDarkRect(dx, dy, dw, this.lineHeight());
@@ -88,6 +95,11 @@
       var dx = this.getArrayX();
       var dy = this.getArrayY();
       var dw = this.getArrayDW(maxCols);
+      if(GDT.Param.ShowIcons) {
+        dw += Window_Base._iconWidth;
+        dx -= Window_Base._iconWidth;
+      }
+
       for (var i = 0; i < maxCols; ++i) {
         for (var j = 0; j < infoArray[i].length; ++j) {
           var eleId = infoArray[i][j];
@@ -109,16 +121,27 @@
       var nextLevelXP = actor.getElementLevelCurve(eleId)[currentElemLevel];
       var nextLevelText;
       if(typeof nextLevelXP == "number") {
-        nextLevelText = currentElemXP+" / "+nextLevelXP;
+        nextLevelText = currentElemXP+"/"+nextLevelXP;
       } else {
         nextLevelText = "MAX";
+      }
+      dx += this.textPadding();
+
+      var extraPadding = (GDT.Param.ShowIcons) ? Window_Base._iconWidth : 0;
+
+      if(GDT.Param.ShowIcons) {
+        var iconNr = parseInt(GDT.Param.IconList[eleId-1]);
+        if(!isNaN(iconNr)) {
+          this.drawIcon(iconNr, dx, dy);
+        }
       }
 
 
 
 
+
       var eleName = $dataSystem.elements[eleId];
-      dx += this.textPadding();
+      dx += this.textPadding() + extraPadding;
       dw -= this.textPadding() * 2;
       this._bypassResetTextColor = true;
       this.changeTextColor(this.systemColor());
@@ -127,7 +150,8 @@
       this._bypassResetTextColor = false;
       this.changeTextColor("#FFFFFF");
 
-      this.drawText(nextLevelText, dx, dy, dw, 'right');
+      dw -= this.textPadding();
+      this.drawText(nextLevelText, dx-extraPadding, dy, dw, 'right');
     };
 
   }
