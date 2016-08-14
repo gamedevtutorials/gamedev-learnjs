@@ -71,3 +71,12 @@ GDT.Util.LunaticTags = function(note, tag, alwaysAsArray) {
 
 };
 
+GDT.Util.setSelfSwitch = function(evtId, switchname, value) {
+  if(evtId && evtId > 0 && switchname) {
+    var mapId = $gameMap.mapId();
+    var key = [mapId, evtId, switchname];
+    $gameSelfSwitches.setValue(key, !!value);
+  }
+  return true;
+};
+
