@@ -73,6 +73,13 @@
     DAMAGE_CURVE[i] = parseInt(DAMAGE_CURVE[i].trim());
   }
 
+  if(!GDT) { GDT = {};}
+  GDT.ElementsLeveling = {};
+  GDT.ElementsLeveling.options = {
+    "LEVEL_CURVE" : LEVEL_CURVE,
+    "DAMAGE_CURVE" : DAMAGE_CURVE
+  };
+
 
   DataManager.extractMetadata = function(data) {
     var re = /<([^<>:]+)(:?)([^>]*)>/g;
@@ -342,7 +349,7 @@
   };
 
   Game_Actor.prototype.getElementLevelCurve = function(elementId) {
-    return LEVEL_CURVE;
+    return GDT.ElementsLeveling.options.LEVEL_CURVE;
   };
 
   Game_Actor.prototype.getElementDamageExtraDamage = function(elementLevel, elementId) {

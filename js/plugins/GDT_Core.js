@@ -67,7 +67,8 @@ GDT.Util.LunaticTags = function(note, tag, alwaysAsArray) {
     note = note.substr(start+end+(tag.length+3));
   }
 
-  return (alwaysAsArray && dataArray.length == 1) ? dataArray[0] : dataArray;
+  if(!alwaysAsArray && dataArray.length == 0) return null;
+  return (!alwaysAsArray && dataArray.length == 1) ? dataArray[0] : dataArray;
 
 };
 
