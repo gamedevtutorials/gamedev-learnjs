@@ -11,7 +11,15 @@ Game_Actor.prototype.levelUp = function() {
   var actorNote = $dataActors[this.actorId()].note;
   var levelnickname = GDT.Util.LunaticTags(actorNote,"levelnickname");
 
-  if(levelnickname) {
+  if(levelnickname && levelnickname instanceof Array) {
+    var nickname = "";
+    for(var i=0; i < levelnickname; i++) {
+      var nickscript = levelnickname[i];
+      var levelnickFunction = Function("level","currentnickname",nickscript);
+      nickname = levelnickFunction(this._level, nickname)||"";
+    }
+    this._name = nickname+this._realName;
+  } else if(levelnickname) {
     var levelnickFunction = Function("level",levelnickname);
     var nickname = levelnickFunction(this._level)||"";
     this._name = nickname+this._realName;
