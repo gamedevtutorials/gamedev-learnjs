@@ -54,6 +54,33 @@
  *   # SKILL_TO_LEARN: Id of the skill which will be learned (id can be found in Database->Skills)
  *
  * LunaticTags:
+ * <elementCurve>
+ * </elementCurve>
+ *
+ * Used in which notetags:
+ * - Classes
+ * - Actor
+ *
+ * If the tag is in the class and the actor, the actor has a higher priority
+ *
+ *
+ * The elementCurve Tag is a Lunatic Tag which is a function with the following parameters:
+ * - options:
+ *  - options.elementId: id of the element which gets Exp
+ *  - options.actor: actor object
+ *  - options.levelcurve: current level curve which can be manipulated
+ *
+ * Needs Return?: No
+ *
+ * Example which raises the level curve for the element with the id 4:
+ *
+ * <elementCurve>
+ * if(options.elementId == 4) {
+ *   for(var i=0; i < options.levelcurve.length; i++) {
+ *     options.levelcurve[i] = Math.round(options.levelcurve[i] * 2);
+ *   }
+ * }
+ * </elementCurve>
  *
  *
  */
