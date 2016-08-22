@@ -1,5 +1,7 @@
-/**
- * Created by Gilles on 05.07.2016.
+/*:
+ * @plugindesc v1.0 - Provides some useful methods (tag parsing, self switch)
+ * @author Gilles Meyer <admin[at]gamedev-tutorials.com>
+ *
  */
 GDTCORE = true;
 if(typeof GDT == "undefined") {
@@ -35,6 +37,18 @@ DataManager.extractMetadata = function(data) {
       }
     } else {
       break;
+    }
+  }
+};
+
+GDT.Util.useTag = function(metaTag, func) {
+  if(metaTag) {
+    if(metaTag instanceof Array) {
+      for(var i=0; i < metaTag.length; i++) {
+        func(metaTag[i]);
+      }
+    } else {
+      func(metaTag);
     }
   }
 };
