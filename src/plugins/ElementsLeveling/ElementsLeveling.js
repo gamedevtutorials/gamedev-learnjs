@@ -1,6 +1,7 @@
 /*:
- * @plugindesc v1.4 - Gives your Partymembers the possibility to level their elemental levels.
- * You can use notetags to learn skills when an element is leveled up
+ * @plugindesc v1.5 - Gives your Partymembers the possibility to level their elemental levels.
+ * You can use notetags to learn skills when an element is leveled up.
+ * Requires GDT_Core
  * @author Gilles Meyer <admin[at]gamedev-tutorials.com>
  *
  * @param - General -
@@ -52,6 +53,8 @@
  *   # ELEMENT_LEVEL: Which level has/have the element(s) to be, that the skill will be learned (levels are sperated by ;)
  *   # SKILL_TO_LEARN: Id of the skill which will be learned (id can be found in Database->Skills)
  *
+ * LunaticTags:
+ *
  *
  */
 
@@ -73,37 +76,11 @@
     DAMAGE_CURVE[i] = parseInt(DAMAGE_CURVE[i].trim());
   }
 
-  if(!GDT) { GDT = {};}
+  if(!GDT) { throw "You need GDT_Core for this plugin";}
   GDT.ElementsLeveling = {};
   GDT.ElementsLeveling.options = {
     "LEVEL_CURVE" : LEVEL_CURVE,
     "DAMAGE_CURVE" : DAMAGE_CURVE
-  };
-
-
-  DataManager.extractMetadata = function(data) {
-    var re = /<([^<>:]+)(:?)([^>]*)>/g;
-    data.meta = {};
-    for (;;) {
-      var match = re.exec(data.note);
-      if (match) {
-        if (match[2] === ':') {
-          if(data.meta[match[1]] !== undefined) {
-            if(!(data.meta[match[1]] instanceof Array)) {
-              data.meta[match[1]] = [data.meta[match[1]]]
-            }
-            data.meta[match[1]].push(match[3]);
-          } else {
-            data.meta[match[1]] = match[3];
-          }
-
-        } else {
-          data.meta[match[1]] = true;
-        }
-      } else {
-        break;
-      }
-    }
   };
 
 
@@ -349,7 +326,28 @@
   };
 
   Game_Actor.prototype.getElementLevelCurve = function(elementId) {
-    return GDT.ElementsLeveling.options.LEVEL_CURVE;
+    var classNote = $dataClasses[this._classId].note;
+    var actorNote = $dataActors[this.actorId()].note;
+
+    var elementCurveNote = GDT.Util.LunaticTags(actorNote, "elementCurve");
+    if(elementCurveNote == null) {
+      elementCurveNote = GDT.Util.LunaticTags(classNote, "elementCurve");
+    }
+
+    var elementCurve = GDT.ElementsLeveling.options.LEVEL_CURVE.slice(0);
+
+    GDT.Util.useTag(elementCurveNote, function() {
+      var elementCurveNoteFunction = Function("options",elementCurveNote);
+      var opts =  {
+        "elementId" : elementId,
+        "actor" : this,
+        "levelcurve" : elementCurve
+      };
+      elementCurveNoteFunction(opts);
+      elementCurve = opts.levelcurve;
+    });
+
+    return elementCurve;
   };
 
   Game_Actor.prototype.getElementDamageExtraDamage = function(elementLevel, elementId) {
