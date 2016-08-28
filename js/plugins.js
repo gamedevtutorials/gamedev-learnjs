@@ -19,5 +19,5 @@ var $plugins =
 {"name":"CodeCracker","status":true,"description":"","parameters":{}},
 {"name":"GDT_ElementsLeveling_CustomCurve","status":false,"description":"","parameters":{}},
 {"name":"LevelNicknames","status":true,"description":"","parameters":{}},
-{"name":"TimeEvents","status":true,"description":"","parameters":{}}
+{"name":"GDT_TimeEvents","status":true,"description":"v1.0 - Timeevents allows you to control Timer on your Events and switch your Self Switches on or off\r\nRequires GDT_Core","parameters":{}}
 ];

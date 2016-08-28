@@ -49,7 +49,6 @@
   };
 
   Game_Event.prototype.setTimer = function(time, selfSwitch, isGameTime, status) {
-    //debugger;
     var timer;
     if(isGameTime) {
       timer = $gameSystem.playtime()+parseInt(time);
@@ -63,7 +62,6 @@
       "isGameTime" : isGameTime,
       "status" : (typeof status == "boolean") ? status : true
     };
-    console.log(timerObj);
     this._timers.push(timerObj);
   };
 
