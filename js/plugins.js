@@ -18,5 +18,6 @@ var $plugins =
 {"name":"GDT_ElementsLeveling","status":true,"description":"v1.4 - Gives your Partymembers the possibility to level their elemental levels.\r\nYou can use notetags to learn skills when an element is leveled up","parameters":{"- General -":"","Level Up Text":"%1s Level for Element %2 is now on %3","Level Curve":"15,40,85,120,160,200,250,300,350,400,500,600,690,830,1000,1200,1500","Extra Damage Curve":"0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,150,150","Element Exp Outside Of Battle":"0","- Status Window (Yanfly Status)-":"","Status Menu Text":"Elements Level","Element Level Column 1":"2 3 4 5 6 7 8","Element Level Column 2":"9 10 11","Show Icons":"1","Icon List":"77,64,65,66,67,68,69,70,71,72,90"}},
 {"name":"CodeCracker","status":true,"description":"","parameters":{}},
 {"name":"GDT_ElementsLeveling_CustomCurve","status":false,"description":"","parameters":{}},
-{"name":"LevelNicknames","status":true,"description":"","parameters":{}}
+{"name":"LevelNicknames","status":true,"description":"","parameters":{}},
+{"name":"TimeEvents","status":true,"description":"","parameters":{}}
 ];
