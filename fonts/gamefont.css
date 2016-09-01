@@ -2,3 +2,8 @@
     font-family: GameFont;
     src: url("mplus-1m-regular.ttf");
 }
+
+@font-face {
+    font-family: GDT;
+    src: url("ltromatic.ttf");
+}
