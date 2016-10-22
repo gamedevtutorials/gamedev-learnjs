@@ -1,3 +1,7 @@
+//=============================================================================
+// rpg_windows.js v1.3.1
+//=============================================================================
+
 //-----------------------------------------------------------------------------
 // Window_Base
 //
@@ -698,7 +702,6 @@ Window_Base.prototype.canvasToLocalY = function(y) {
     return y;
 };
 
-
 //-----------------------------------------------------------------------------
 // Window_Selectable
 //
@@ -1275,7 +1278,6 @@ Window_Selectable.prototype.refresh = function() {
     }
 };
 
-
 //-----------------------------------------------------------------------------
 // Window_Command
 //
@@ -1430,7 +1432,6 @@ Window_Command.prototype.refresh = function() {
     Window_Selectable.prototype.refresh.call(this);
 };
 
-
 //-----------------------------------------------------------------------------
 // Window_HorzCommand
 //
@@ -1458,7 +1459,6 @@ Window_HorzCommand.prototype.maxCols = function() {
 Window_HorzCommand.prototype.itemTextAlign = function() {
     return 'center';
 };
-
 
 //-----------------------------------------------------------------------------
 // Window_Help
@@ -1498,7 +1498,6 @@ Window_Help.prototype.refresh = function() {
     this.contents.clear();
     this.drawTextEx(this._text, this.textPadding(), 0);
 };
-
 
 //-----------------------------------------------------------------------------
 // Window_Gold
@@ -1546,7 +1545,6 @@ Window_Gold.prototype.open = function() {
     this.refresh();
     Window_Base.prototype.open.call(this);
 };
-
 
 //-----------------------------------------------------------------------------
 // Window_MenuCommand
@@ -1683,7 +1681,6 @@ Window_MenuCommand.prototype.selectLast = function() {
     this.selectSymbol(Window_MenuCommand._lastCommandSymbol);
 };
 
-
 //-----------------------------------------------------------------------------
 // Window_MenuStatus
 //
@@ -1803,7 +1800,6 @@ Window_MenuStatus.prototype.setPendingIndex = function(index) {
     this.redrawItem(lastPendingIndex);
 };
 
-
 //-----------------------------------------------------------------------------
 // Window_MenuActor
 //
@@ -1853,7 +1849,6 @@ Window_MenuActor.prototype.selectForItem = function(item) {
     }
 };
 
-
 //-----------------------------------------------------------------------------
 // Window_ItemCategory
 //
@@ -1896,7 +1891,6 @@ Window_ItemCategory.prototype.setItemWindow = function(itemWindow) {
     this._itemWindow = itemWindow;
     this.update();
 };
-
 
 //-----------------------------------------------------------------------------
 // Window_ItemList
@@ -2016,7 +2010,6 @@ Window_ItemList.prototype.refresh = function() {
     this.drawAllItems();
 };
 
-
 //-----------------------------------------------------------------------------
 // Window_SkillType
 //
@@ -2084,7 +2077,6 @@ Window_SkillType.prototype.selectLast = function() {
     }
 };
 
-
 //-----------------------------------------------------------------------------
 // Window_SkillStatus
 //
@@ -2120,7 +2112,6 @@ Window_SkillStatus.prototype.refresh = function() {
         this.drawActorSimpleStatus(this._actor, 162, y, width);
     }
 };
-
 
 //-----------------------------------------------------------------------------
 // Window_SkillList
@@ -2243,7 +2234,6 @@ Window_SkillList.prototype.refresh = function() {
     this.drawAllItems();
 };
 
-
 //-----------------------------------------------------------------------------
 // Window_EquipStatus
 //
@@ -2334,7 +2324,6 @@ Window_EquipStatus.prototype.drawNewParam = function(x, y, paramId) {
     this.drawText(newValue, x, y, 48, 'right');
 };
 
-
 //-----------------------------------------------------------------------------
 // Window_EquipCommand
 //
@@ -2365,7 +2354,6 @@ Window_EquipCommand.prototype.makeCommandList = function() {
     this.addCommand(TextManager.optimize, 'optimize');
     this.addCommand(TextManager.clear,    'clear');
 };
-
 
 //-----------------------------------------------------------------------------
 // Window_EquipSlot
@@ -2449,7 +2437,6 @@ Window_EquipSlot.prototype.updateHelp = function() {
     }
 };
 
-
 //-----------------------------------------------------------------------------
 // Window_EquipItem
 //
@@ -2517,7 +2504,6 @@ Window_EquipItem.prototype.updateHelp = function() {
 
 Window_EquipItem.prototype.playOkSound = function() {
 };
-
 
 //-----------------------------------------------------------------------------
 // Window_Status
@@ -2645,7 +2631,6 @@ Window_Status.prototype.drawProfile = function(x, y) {
 Window_Status.prototype.maxEquipmentLines = function() {
     return 6;
 };
-
 
 //-----------------------------------------------------------------------------
 // Window_Options
@@ -2793,7 +2778,6 @@ Window_Options.prototype.setConfigValue = function(symbol, volume) {
     ConfigManager[symbol] = volume;
 };
 
-
 //-----------------------------------------------------------------------------
 // Window_SavefileList
 //
@@ -2889,7 +2873,6 @@ Window_SavefileList.prototype.drawPlaytime = function(info, x, y, width) {
 Window_SavefileList.prototype.playOkSound = function() {
 };
 
-
 //-----------------------------------------------------------------------------
 // Window_ShopCommand
 //
@@ -2921,7 +2904,6 @@ Window_ShopCommand.prototype.makeCommandList = function() {
     this.addCommand(TextManager.sell,   'sell',   !this._purchaseOnly);
     this.addCommand(TextManager.cancel, 'cancel');
 };
-
 
 //-----------------------------------------------------------------------------
 // Window_ShopBuy
@@ -3027,7 +3009,6 @@ Window_ShopBuy.prototype.updateHelp = function() {
     }
 };
 
-
 //-----------------------------------------------------------------------------
 // Window_ShopSell
 //
@@ -3047,7 +3028,6 @@ Window_ShopSell.prototype.initialize = function(x, y, width, height) {
 Window_ShopSell.prototype.isEnabled = function(item) {
     return item && item.price > 0;
 };
-
 
 //-----------------------------------------------------------------------------
 // Window_ShopNumber
@@ -3274,7 +3254,6 @@ Window_ShopNumber.prototype.onButtonOk = function() {
     this.processOk();
 };
 
-
 //-----------------------------------------------------------------------------
 // Window_ShopStatus
 //
@@ -3428,7 +3407,6 @@ Window_ShopStatus.prototype.changePage = function() {
     SoundManager.playCursor();
 };
 
-
 //-----------------------------------------------------------------------------
 // Window_NameEdit
 //
@@ -3561,7 +3539,6 @@ Window_NameEdit.prototype.refresh = function() {
     var rect = this.itemRect(this._index);
     this.setCursorRect(rect.x, rect.y, rect.width, rect.height);
 };
-
 
 //-----------------------------------------------------------------------------
 // Window_NameInput
@@ -3830,7 +3807,6 @@ Window_NameInput.prototype.onNameOk = function() {
     }
 };
 
-
 //-----------------------------------------------------------------------------
 // Window_ChoiceList
 //
@@ -3964,7 +3940,6 @@ Window_ChoiceList.prototype.callCancelHandler = function() {
     this._messageWindow.terminateMessage();
     this.close();
 };
-
 
 //-----------------------------------------------------------------------------
 // Window_NumberInput
@@ -4182,7 +4157,6 @@ Window_NumberInput.prototype.onButtonOk = function() {
     this.hideButtons();
 };
 
-
 //-----------------------------------------------------------------------------
 // Window_EventItem
 //
@@ -4252,7 +4226,6 @@ Window_EventItem.prototype.onCancel = function() {
     this._messageWindow.terminateMessage();
     this.close();
 };
-
 
 //-----------------------------------------------------------------------------
 // Window_Message
@@ -4582,7 +4555,6 @@ Window_Message.prototype.startPause = function() {
     this.pause = true;
 };
 
-
 //-----------------------------------------------------------------------------
 // Window_ScrollText
 //
@@ -4672,7 +4644,6 @@ Window_ScrollText.prototype.terminateMessage = function() {
     this.hide();
 };
 
-
 //-----------------------------------------------------------------------------
 // Window_MapName
 //
@@ -4745,7 +4716,6 @@ Window_MapName.prototype.drawBackground = function(x, y, width, height) {
     this.contents.gradientFillRect(x, y, width / 2, height, color2, color1);
     this.contents.gradientFillRect(x + width / 2, y, width / 2, height, color1, color2);
 };
-
 
 //-----------------------------------------------------------------------------
 // Window_BattleLog
@@ -5336,7 +5306,6 @@ Window_BattleLog.prototype.makeTpDamageText = function(target) {
     }
 };
 
-
 //-----------------------------------------------------------------------------
 // Window_PartyCommand
 //
@@ -5377,7 +5346,6 @@ Window_PartyCommand.prototype.setup = function() {
     this.activate();
     this.open();
 };
-
 
 //-----------------------------------------------------------------------------
 // Window_ActorCommand
@@ -5474,7 +5442,6 @@ Window_ActorCommand.prototype.selectLast = function() {
     }
 };
 
-
 //-----------------------------------------------------------------------------
 // Window_BattleStatus
 //
@@ -5565,7 +5532,6 @@ Window_BattleStatus.prototype.drawGaugeAreaWithoutTp = function(rect, actor) {
     this.drawActorMp(actor, rect.x + 216,  rect.y, 114);
 };
 
-
 //-----------------------------------------------------------------------------
 // Window_BattleActor
 //
@@ -5604,7 +5570,6 @@ Window_BattleActor.prototype.select = function(index) {
 Window_BattleActor.prototype.actor = function() {
     return $gameParty.members()[this.index()];
 };
-
 
 //-----------------------------------------------------------------------------
 // Window_BattleEnemy
@@ -5684,7 +5649,6 @@ Window_BattleEnemy.prototype.select = function(index) {
     $gameTroop.select(this.enemy());
 };
 
-
 //-----------------------------------------------------------------------------
 // Window_BattleSkill
 //
@@ -5712,7 +5676,6 @@ Window_BattleSkill.prototype.hide = function() {
     this.hideHelpWindow();
     Window_SkillList.prototype.hide.call(this);
 };
-
 
 //-----------------------------------------------------------------------------
 // Window_BattleItem
@@ -5745,7 +5708,6 @@ Window_BattleItem.prototype.hide = function() {
     this.hideHelpWindow();
     Window_ItemList.prototype.hide.call(this);
 };
-
 
 //-----------------------------------------------------------------------------
 // Window_TitleCommand
@@ -5804,7 +5766,6 @@ Window_TitleCommand.prototype.selectLast = function() {
     }
 };
 
-
 //-----------------------------------------------------------------------------
 // Window_GameEnd
 //
@@ -5837,7 +5798,6 @@ Window_GameEnd.prototype.makeCommandList = function() {
     this.addCommand(TextManager.toTitle, 'toTitle');
     this.addCommand(TextManager.cancel,  'cancel');
 };
-
 
 //-----------------------------------------------------------------------------
 // Window_DebugRange
@@ -5935,7 +5895,6 @@ Window_DebugRange.prototype.setEditWindow = function(editWindow) {
     this._editWindow = editWindow;
     this.update();
 };
-
 
 //-----------------------------------------------------------------------------
 // Window_DebugEdit

@@ -1,3 +1,7 @@
+//=============================================================================
+// rpg_scenes.js v1.3.1
+//=============================================================================
+
 //-----------------------------------------------------------------------------
 // Scene_Base
 //
@@ -136,7 +140,6 @@ Scene_Base.prototype.slowFadeSpeed = function() {
     return this.fadeSpeed() * 2;
 };
 
-
 //-----------------------------------------------------------------------------
 // Scene_Boot
 //
@@ -158,11 +161,14 @@ Scene_Boot.prototype.create = function() {
     Scene_Base.prototype.create.call(this);
     DataManager.loadDatabase();
     ConfigManager.load();
-    this.loadSystemImages();
+    this.loadSystemWindowImage();
 };
 
-Scene_Boot.prototype.loadSystemImages = function() {
+Scene_Boot.prototype.loadSystemWindowImage = function() {
     ImageManager.loadSystem('Window');
+};
+
+Scene_Boot.loadSystemImages = function() {
     ImageManager.loadSystem('IconSet');
     ImageManager.loadSystem('Balloon');
     ImageManager.loadSystem('Shadow1');
@@ -221,7 +227,6 @@ Scene_Boot.prototype.checkPlayerLocation = function() {
         throw new Error('Player\'s starting position is not set');
     }
 };
-
 
 //-----------------------------------------------------------------------------
 // Scene_Title
@@ -335,7 +340,6 @@ Scene_Title.prototype.playTitleMusic = function() {
     AudioManager.stopBgs();
     AudioManager.stopMe();
 };
-
 
 //-----------------------------------------------------------------------------
 // Scene_Map
@@ -686,7 +690,6 @@ Scene_Map.prototype.encounterEffectSpeed = function() {
     return 60;
 };
 
-
 //-----------------------------------------------------------------------------
 // Scene_MenuBase
 //
@@ -747,7 +750,6 @@ Scene_MenuBase.prototype.previousActor = function() {
 
 Scene_MenuBase.prototype.onActorChange = function() {
 };
-
 
 //-----------------------------------------------------------------------------
 // Scene_Menu
@@ -876,7 +878,6 @@ Scene_Menu.prototype.onFormationCancel = function() {
         this._commandWindow.activate();
     }
 };
-
 
 //-----------------------------------------------------------------------------
 // Scene_ItemBase
@@ -1009,7 +1010,6 @@ Scene_ItemBase.prototype.checkCommonEvent = function() {
     }
 };
 
-
 //-----------------------------------------------------------------------------
 // Scene_Item
 //
@@ -1090,7 +1090,6 @@ Scene_Item.prototype.useItem = function() {
     Scene_ItemBase.prototype.useItem.call(this);
     this._itemWindow.redrawCurrentItem();
 };
-
 
 //-----------------------------------------------------------------------------
 // Scene_Skill
@@ -1191,7 +1190,6 @@ Scene_Skill.prototype.onActorChange = function() {
     this.refreshActor();
     this._skillTypeWindow.activate();
 };
-
 
 //-----------------------------------------------------------------------------
 // Scene_Equip
@@ -1324,7 +1322,6 @@ Scene_Equip.prototype.onActorChange = function() {
     this._commandWindow.activate();
 };
 
-
 //-----------------------------------------------------------------------------
 // Scene_Status
 //
@@ -1361,7 +1358,6 @@ Scene_Status.prototype.onActorChange = function() {
     this._statusWindow.activate();
 };
 
-
 //-----------------------------------------------------------------------------
 // Scene_Options
 //
@@ -1393,7 +1389,6 @@ Scene_Options.prototype.createOptionsWindow = function() {
     this._optionsWindow.setHandler('cancel', this.popScene.bind(this));
     this.addWindow(this._optionsWindow);
 };
-
 
 //-----------------------------------------------------------------------------
 // Scene_File
@@ -1467,7 +1462,6 @@ Scene_File.prototype.firstSavefileIndex = function() {
 Scene_File.prototype.onSavefileOk = function() {
 };
 
-
 //-----------------------------------------------------------------------------
 // Scene_Save
 //
@@ -1516,7 +1510,6 @@ Scene_Save.prototype.onSaveFailure = function() {
     SoundManager.playBuzzer();
     this.activateListWindow();
 };
-
 
 //-----------------------------------------------------------------------------
 // Scene_Load
@@ -1583,7 +1576,6 @@ Scene_Load.prototype.reloadMapIfUpdated = function() {
     }
 };
 
-
 //-----------------------------------------------------------------------------
 // Scene_GameEnd
 //
@@ -1626,7 +1618,6 @@ Scene_GameEnd.prototype.commandToTitle = function() {
     this.fadeOutAll();
     SceneManager.goto(Scene_Title);
 };
-
 
 //-----------------------------------------------------------------------------
 // Scene_Shop
@@ -1890,7 +1881,6 @@ Scene_Shop.prototype.sellingPrice = function() {
     return Math.floor(this._item.price / 2);
 };
 
-
 //-----------------------------------------------------------------------------
 // Scene_Name
 //
@@ -1939,7 +1929,6 @@ Scene_Name.prototype.onInputOk = function() {
     this._actor.setName(this._editWindow.name());
     this.popScene();
 };
-
 
 //-----------------------------------------------------------------------------
 // Scene_Debug
@@ -2018,7 +2007,6 @@ Scene_Debug.prototype.helpText = function() {
                 'Pagedown : +10');
     }
 };
-
 
 //-----------------------------------------------------------------------------
 // Scene_Battle
@@ -2422,7 +2410,6 @@ Scene_Battle.prototype.endCommandSelection = function() {
     this._actorCommandWindow.close();
     this._statusWindow.deselect();
 };
-
 
 //-----------------------------------------------------------------------------
 // Scene_Gameover

@@ -1,3 +1,7 @@
+//=============================================================================
+// rpg_sprites.js v1.3.1
+//=============================================================================
+
 //-----------------------------------------------------------------------------
 // Sprite_Base
 //
@@ -62,7 +66,6 @@ Sprite_Base.prototype.startAnimation = function(animation, mirror, delay) {
 Sprite_Base.prototype.isAnimationPlaying = function() {
     return this._animationSprites.length > 0;
 };
-
 
 //-----------------------------------------------------------------------------
 // Sprite_Button
@@ -172,7 +175,6 @@ Sprite_Button.prototype.canvasToLocalY = function(y) {
     }
     return y;
 };
-
 
 //-----------------------------------------------------------------------------
 // Sprite_Character
@@ -442,7 +444,6 @@ Sprite_Character.prototype.isBalloonPlaying = function() {
     return !!this._balloonSprite;
 };
 
-
 //-----------------------------------------------------------------------------
 // Sprite_Battler
 //
@@ -632,7 +633,6 @@ Sprite_Battler.prototype.isMoving = function() {
 Sprite_Battler.prototype.inHomePosition = function() {
     return this._offsetX === 0 && this._offsetY === 0;
 };
-
 
 //-----------------------------------------------------------------------------
 // Sprite_Actor
@@ -843,7 +843,7 @@ Sprite_Actor.prototype.motionSpeed = function() {
 
 Sprite_Actor.prototype.refreshMotion = function() {
     var actor = this._actor;
-	var motionGuard = Sprite_Actor.MOTIONS['guard'];
+    var motionGuard = Sprite_Actor.MOTIONS['guard'];
     if (actor) {
         if (this._motion === motionGuard && !BattleManager.isInputting()) {
                 return;
@@ -907,7 +907,6 @@ Sprite_Actor.prototype.damageOffsetX = function() {
 Sprite_Actor.prototype.damageOffsetY = function() {
     return 0;
 };
-
 
 //-----------------------------------------------------------------------------
 // Sprite_Enemy
@@ -1167,7 +1166,6 @@ Sprite_Enemy.prototype.damageOffsetY = function() {
     return -8;
 };
 
-
 //-----------------------------------------------------------------------------
 // Sprite_Animation
 //
@@ -1185,6 +1183,7 @@ Sprite_Animation._checker2 = {};
 
 Sprite_Animation.prototype.initialize = function() {
     Sprite.prototype.initialize.call(this);
+    this._reduceArtifacts = true;
     this.initMembers();
 };
 
@@ -1472,7 +1471,6 @@ Sprite_Animation.prototype.startHiding = function(duration) {
     this._target.hide();
 };
 
-
 //-----------------------------------------------------------------------------
 // Sprite_Damage
 //
@@ -1593,7 +1591,6 @@ Sprite_Damage.prototype.isPlaying = function() {
     return this._duration > 0;
 };
 
-
 //-----------------------------------------------------------------------------
 // Sprite_StateIcon
 //
@@ -1672,7 +1669,6 @@ Sprite_StateIcon.prototype.updateFrame = function() {
     this.setFrame(sx, sy, pw, ph);
 };
 
-
 //-----------------------------------------------------------------------------
 // Sprite_StateOverlay
 //
@@ -1742,7 +1738,6 @@ Sprite_StateOverlay.prototype.updateFrame = function() {
         this.setFrame(0, 0, 0, 0);
     }
 };
-
 
 //-----------------------------------------------------------------------------
 // Sprite_Weapon
@@ -1825,7 +1820,6 @@ Sprite_Weapon.prototype.isPlaying = function() {
     return this._weaponImageId > 0;
 };
 
-
 //-----------------------------------------------------------------------------
 // Sprite_Balloon
 //
@@ -1897,7 +1891,6 @@ Sprite_Balloon.prototype.isPlaying = function() {
     return this._duration > 0;
 };
 
-
 //-----------------------------------------------------------------------------
 // Sprite_Picture
 //
@@ -1914,6 +1907,7 @@ Sprite_Picture.prototype.initialize = function(pictureId) {
     Sprite.prototype.initialize.call(this);
     this._pictureId = pictureId;
     this._pictureName = '';
+    this._isPicture = true;
     this.update();
 };
 
@@ -1992,7 +1986,6 @@ Sprite_Picture.prototype.loadBitmap = function() {
     this.bitmap = ImageManager.loadPicture(this._pictureName);
 };
 
-
 //-----------------------------------------------------------------------------
 // Sprite_Timer
 //
@@ -2054,7 +2047,6 @@ Sprite_Timer.prototype.updateVisibility = function() {
     this.visible = $gameTimer.isWorking();
 };
 
-
 //-----------------------------------------------------------------------------
 // Sprite_Destination
 //
@@ -2111,7 +2103,6 @@ Sprite_Destination.prototype.updateAnimation = function() {
     this.scale.x = 1 + this._frameCount / 20;
     this.scale.y = this.scale.x;
 };
-
 
 //-----------------------------------------------------------------------------
 // Spriteset_Base
@@ -2250,7 +2241,6 @@ Spriteset_Base.prototype.updatePosition = function() {
     this.x += Math.round(screen.shake());
 };
 
-
 //-----------------------------------------------------------------------------
 // Spriteset_Map
 //
@@ -2302,7 +2292,11 @@ Spriteset_Map.prototype.createParallax = function() {
 };
 
 Spriteset_Map.prototype.createTilemap = function() {
-    this._tilemap = new Tilemap();
+    if (Graphics.isWebGL()) {
+        this._tilemap = new ShaderTilemap();
+    } else {
+        this._tilemap = new Tilemap();
+    }
     this._tilemap.tileWidth = $gameMap.tileWidth();
     this._tilemap.tileHeight = $gameMap.tileHeight();
     this._tilemap.setData($gameMap.width(), $gameMap.height(), $gameMap.data());
@@ -2319,8 +2313,12 @@ Spriteset_Map.prototype.loadTileset = function() {
         for (var i = 0; i < tilesetNames.length; i++) {
             this._tilemap.bitmaps[i] = ImageManager.loadTileset(tilesetNames[i]);
         }
-        this._tilemap.flags = $gameMap.tilesetFlags();
-        this._tilemap.refresh();
+        var newTilesetFlags = $gameMap.tilesetFlags();
+        this._tilemap.refreshTileset();
+        if (!this._tilemap.flags.equals(newTilesetFlags)) {
+            this._tilemap.refresh();
+        }
+        this._tilemap.flags = newTilesetFlags;
     }
 };
 
@@ -2413,7 +2411,6 @@ Spriteset_Map.prototype.updateWeather = function() {
     this._weather.origin.x = $gameMap.displayX() * $gameMap.tileWidth();
     this._weather.origin.y = $gameMap.displayY() * $gameMap.tileHeight();
 };
-
 
 //-----------------------------------------------------------------------------
 // Spriteset_Battle
