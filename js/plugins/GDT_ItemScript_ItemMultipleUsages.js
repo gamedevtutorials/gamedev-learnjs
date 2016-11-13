@@ -17,7 +17,7 @@ GDT.multiItemUseage = function(target, item, numuse, replaceId) {
   GDT.usemultiItem(target, item, numuse, replaceId);
 };
 
-GDT.multiItemUseageUse = function() {
+GDT.multiItemUseageUse = function(item, numuse, replaceId) {
   GDT.usemultiItem(null, item, numuse, replaceId);
 };
 
