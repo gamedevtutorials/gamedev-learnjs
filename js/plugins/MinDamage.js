@@ -1,6 +1,7 @@
 (function() {
   var _Game_Action_prototype_executeDamage = Game_Action.prototype.executeDamage;
   Game_Action.prototype.executeDamage = function(target, value) {
+    var minDmg = 5;
     if(this.isHpEffect() && (value >= 0 && value < minDmg)) {
       value = minDmg;
     }
