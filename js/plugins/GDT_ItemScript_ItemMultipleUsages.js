@@ -14,7 +14,14 @@ if(typeof GDT == "undefined" || typeof GDT.ItemScripts == "undefined") {
 
 GDT._itemusages = {};
 GDT.multiItemUseage = function(target, item, numuse, replaceId) {
-  console.log(arguments, this);
+  GDT.usemultiItem(target, item, numuse, replaceId);
+};
+
+GDT.multiItemUseageUse = function() {
+  GDT.usemultiItem(null, item, numuse, replaceId);
+};
+
+GDT.usemultiItem = function(target, item, numuse, replaceId) {
   if(typeof numuse != "number") {
     return false;
   }
@@ -35,10 +42,5 @@ GDT.multiItemUseage = function(target, item, numuse, replaceId) {
   } else {
     $gameParty.gainItem(item, 1);
   }
-
 };
 
-GDT.multiItemUseageUse = function() {
- console.log(arguments, this);
-  debugger;
-};
