@@ -61,7 +61,7 @@ GDT.ItemScripts = {};
 (function() {
 
 
-  var parameters = PluginManager.parameters('ItemScripts');
+  var parameters = PluginManager.parameters('GDT_ItemScripts');
   var callScriptTag = String(parameters['noteTag'] || 'callscript');
 
   var _Game_Party_consumeItem = Game_Party.prototype.consumeItem;

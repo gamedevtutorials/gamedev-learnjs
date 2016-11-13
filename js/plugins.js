@@ -19,6 +19,6 @@ var $plugins =
 {"name":"YEP_RegionRestrictions","status":false,"description":"v1.03 Use regions to block out Events and/or the player from\nbeing able to venture into those spots.","parameters":{"Player Restrict":"10","Event Restrict":"11","All Restrict":"12","Player Allow":"0","Event Allow":"0","All Allow":"0"}},
 {"name":"GainExtrasAfterBattle","status":true,"description":"Gains Extra Stats after battle (hp, or mp or even revive) v1.3","parameters":{"healHP":"1","useMaxHp":"1","percentageHp":"10","healDead":"0","giveDeadOnlyXHp":"0","healMP":"0","useMaxMp":"1","percentageMp":"10","conditionalSwitchRegain":"0","conditionalSwitchRegainSwitches":"1:150,2:151,3:152,4:153","conditionalEquipRegain":"0","standardRegain":"1"}},
 {"name":"MinDamage","status":true,"description":"","parameters":{}},
-{"name":"ItemScripts","status":true,"description":"v0.9 Allows Scripts to call on Item Use","parameters":{"noteTag":"callscript"}},
-{"name":"ItemScript_ItemMultipleUsages","status":true,"description":"","parameters":{}}
+{"name":"GDT_ItemScripts","status":true,"description":"v1.0 Allows Scripts to call on Item Use","parameters":{"noteTag":"callscript"}},
+{"name":"GDT_ItemScript_ItemMultipleUsages","status":true,"description":"v0.6 Allows Multiple Usage of an item","parameters":{}}
 ];
