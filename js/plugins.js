@@ -20,5 +20,5 @@ var $plugins =
 {"name":"GainExtrasAfterBattle","status":true,"description":"Gains Extra Stats after battle (hp, or mp or even revive) v1.3","parameters":{"healHP":"1","useMaxHp":"1","percentageHp":"10","healDead":"0","giveDeadOnlyXHp":"0","healMP":"0","useMaxMp":"1","percentageMp":"10","conditionalSwitchRegain":"0","conditionalSwitchRegainSwitches":"1:150,2:151,3:152,4:153","conditionalEquipRegain":"0","standardRegain":"1"}},
 {"name":"MinDamage","status":true,"description":"","parameters":{}},
 {"name":"ItemScripts","status":true,"description":"v0.9 Allows Scripts to call on Item Use","parameters":{"noteTag":"callscript"}},
-{"name":"ItemUsage","status":true,"description":"","parameters":{}}
+{"name":"ItemScript_ItemMultipleUsages","status":true,"description":"","parameters":{}}
 ];

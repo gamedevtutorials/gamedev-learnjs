@@ -1,5 +1,5 @@
 /*:
- * @plugindesc v0.9 Allows Scripts to call on Item Use
+ * @plugindesc v1.0 Allows Scripts to call on Item Use
  * @author Gilles Meyer <admin@gamedev-tutorials.com>
  *
  * @param noteTag
@@ -13,7 +13,7 @@
  *
  * Examples:
  *
- *   Example1: Standard Call
+ *   Example1: Standard Call for Item Menu
  *   -------------------------
  *
  *   <callscript:myFunctionName>
@@ -25,7 +25,7 @@
  *  -------------------------
  *
  *
- *  Example2: Standard Call
+ *  Example2: Standard Call For Item Menu
  *  -------------------------
  *
  *  <callscript:awesomeFunction(2,true)>
@@ -33,6 +33,18 @@
  *
  *  This would call the function awesomeFunction with parameters:
  *   - targets(array of group members)
+ *   - item
+ *   - 2
+ *   - true
+ *  -------------------------
+ *
+ *  Example3: Standard Call for $gameParty.consumeItem
+ *  -------------------------
+ *
+ *  <callscriptUse:awesomeFunction(2,true)>
+ *
+ *
+ *  This would call the function awesomeFunction with parameters:
  *   - item
  *   - 2
  *   - true
@@ -52,23 +64,45 @@ GDT.ItemScripts = {};
   var parameters = PluginManager.parameters('ItemScripts');
   var callScriptTag = String(parameters['noteTag'] || 'callscript');
 
+  var _Game_Party_consumeItem = Game_Party.prototype.consumeItem;
+  Game_Party.prototype.consumeItem = function(item) {
+    _Game_Party_consumeItem.call(this, item);
+    GDT.ItemScripts.callScript(item);
+  };
+
+
   var _Scene_ItemBase_applyItem = Scene_ItemBase.prototype.applyItem;
   Scene_ItemBase.prototype.applyItem = function() {
     _Scene_ItemBase_applyItem.call(this);
+    GDT.ItemScripts.callScript(this.item(), this.itemTargetActors());
+  };
+
+
+  GDT.ItemScripts.callScript = function(item, actors) {
     try {
-      var CS = this.item().meta[callScriptTag];
+      var CSString = callScriptTag;
+      if(!actors) {
+        CSString += "Use";
+      }
+      var CS = item.meta[CSString];
+      if(!CS) {
+        return false;
+      }
+
       var func = GDT.ItemScripts.extractFunctionName(CS);
       var staticArgs = GDT.ItemScripts.extractStaticParameters(CS);
+
+      var actorsVar = (actors) ? "actors, " : "";
+
       if(staticArgs) {
-        func += "(this.itemTargetActors(),this.item(),"+staticArgs+")";
+        func += "("+actorsVar+"item,"+staticArgs+")";
       } else {
-        func += "(this.itemTargetActors(),this.item())";
+        func += "("+actorsVar+"item)";
       }
 
       eval(func);
     }catch(e) { console.log("Something went wrong: "+e);}
-  };
-
+  }
 
   GDT.ItemScripts.extractStaticParameters = function(callScript) {
     var reg = new RegExp("(.*)\\((.*)\\)");
@@ -84,9 +118,6 @@ GDT.ItemScripts = {};
     if(reg == null || reg.length < 1) return callScript;
     return reg[1];
   };
-
-
-
 
   var _Game_Action_hasItemAnyValidEffects = Game_Action.prototype.hasItemAnyValidEffects;
   Game_Action.prototype.hasItemAnyValidEffects = function(target) {
