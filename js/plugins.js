@@ -21,5 +21,6 @@ var $plugins =
 {"name":"MinDamage","status":true,"description":"","parameters":{}},
 {"name":"GDT_ItemScripts","status":true,"description":"v1.0 Allows Scripts to call on Item Use","parameters":{"noteTag":"callscript"}},
 {"name":"GDT_ItemScript_ItemMultipleUsages","status":true,"description":"v0.6 Allows Multiple Usage of an item","parameters":{}},
-{"name":"GDT_AdditionalStats","status":true,"description":"","parameters":{}}
+{"name":"GDT_AdditionalSkills","status":true,"description":"","parameters":{}},
+{"name":"GDT_AdditionalStats","status":true,"description":"v1.0 Adds additional stats for an actor when using the correct equipment","parameters":{}}
 ];

@@ -1,4 +1,26 @@
+/*:
+ * @author Gilles <admin[at]gamedev-tutorials.com>
+ *
+ * @plugindesc v1.0 Adds additional stats for an actor when using the correct equipment
+ *
+ * @help
+ *
+ * <extrastats>
+   {
+   "for" : "class",
+   "forid" : "1",
+   "stats" : "10,0,0,0,0,1,0,0",
+   "skills" : "13,12,5,10,16"
+   }
+   </extrastats>
+ *
+ */
+
 (function() {
+  if(!GDT.AdditionalPlugins) {
+    GDT.AdditionalPlugins = {};
+  }
+
 
   Game_Actor.prototype.paramPlus = function(paramId) {
     var value = Game_Battler.prototype.paramPlus.call(this, paramId);
@@ -26,7 +48,7 @@
     return value;
   };
 
-  function isForCharacter(actor, tag) {
+  GDT.AdditionalPlugins.isForCharacter = function(actor, tag) {
     if(!tag || !tag["for"] || !tag["forid"]) return false;
     if(tag["for"] == "class") {
       return actor._classId === parseInt(tag["forid"]);
